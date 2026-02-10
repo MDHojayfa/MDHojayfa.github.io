@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDH TESTER — Ultimate API Key Tester by MDHojayfa</title>
+    <meta name="description" content="Test & validate 100+ API keys instantly. Full request inspector, batch testing, code snippets, key scanner & more. Free tool by MDHojayfa.">
+    <meta property="og:title" content="MDH TESTER — Ultimate Universal API Key Tester">
+    <meta property="og:description" content="Test & validate 100+ API keys instantly. Full request inspector, batch testing, cURL/Python/Node snippets & more.">
+    <meta property="og:url" content="https://mdhojayfa.github.io/mdhtester.html">
+    <meta name="theme-color" content="#8b5cf6">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTURIIFRFU1RFUiIsInNob3J0X25hbWUiOiJNREhUZXN0ZXIiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzA2MDYwZSIsInRoZW1lX2NvbG9yIjoiIzhiNWNmNiJ9">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root{--accent:#8b5cf6;--accent2:#6366f1;--bg:#06060e;--card:rgba(12,12,24,.85);--card-solid:#0c0c18;--border:rgba(255,255,255,.06);--text:#e2e8f0;--text-dim:#94a3b8;--text-muted:#475569;--success:#22c55e;--danger:#ef4444;--warn:#eab308;--info:#3b82f6}
+        [data-theme="light"]{--bg:#f8fafc;--card:rgba(255,255,255,.9);--card-solid:#fff;--border:rgba(0,0,0,.08);--text:#1e293b;--text-dim:#475569;--text-muted:#94a3b8}
+        *{font-family:'Outfit','Inter',sans-serif;box-sizing:border-box}
+        code,.mono{font-family:'JetBrains Mono',monospace}
+        html{scroll-behavior:smooth}
+        body{background:var(--bg);min-height:100vh;overflow-x:hidden;color:var(--text);transition:background .4s,color .4s}
+        [data-theme="light"] body{background:var(--bg)}
+        .bg-animated{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+        .bg-animated::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 20%,rgba(139,92,246,.08) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(59,130,246,.06) 0%,transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(99,102,241,.04) 0%,transparent 60%);animation:bgShift 20s ease-in-out infinite alternate}
+        [data-theme="light"] .bg-animated::before{background:radial-gradient(ellipse at 30% 20%,rgba(139,92,246,.04) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(59,130,246,.03) 0%,transparent 50%)}
+        @keyframes bgShift{0%{transform:translate(0,0) rotate(0deg)}50%{transform:translate(-3%,2%) rotate(1deg)}100%{transform:translate(2%,-1%) rotate(-1deg)}}
+        .bg-grid{background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:50px 50px}
+        [data-theme="light"] .bg-grid{background-image:linear-gradient(rgba(0,0,0,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.03) 1px,transparent 1px)}
+        .glass-card{background:var(--card);backdrop-filter:blur(20px) saturate(1.2);border:1px solid var(--border);border-radius:16px;transition:all .4s cubic-bezier(.4,0,.2,1)}
+        .glass-card:hover{border-color:rgba(139,92,246,.25);box-shadow:0 8px 40px rgba(139,92,246,.06);transform:translateY(-1px)}
+        .glow-green{box-shadow:0 0 20px rgba(34,197,94,.2),0 0 60px rgba(34,197,94,.05);border-color:rgba(34,197,94,.4)!important}
+        .glow-red{box-shadow:0 0 20px rgba(239,68,68,.2),0 0 60px rgba(239,68,68,.05);border-color:rgba(239,68,68,.4)!important}
+        .glow-yellow{box-shadow:0 0 20px rgba(234,179,8,.2),0 0 60px rgba(234,179,8,.05);border-color:rgba(234,179,8,.4)!important}
+        .btn-primary{background:linear-gradient(135deg,#8b5cf6 0%,#6366f1 50%,#8b5cf6 100%);background-size:200% auto;transition:all .4s ease;position:relative;overflow:hidden}
+        .btn-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);transition:left .6s ease}
+        .btn-primary:hover::before{left:100%}
+        .btn-primary:hover{background-position:right center;box-shadow:0 4px 30px rgba(139,92,246,.4);transform:translateY(-2px)}
+        .btn-primary:active{transform:translateY(0)}
+        .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+        .btn-ghost{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);transition:all .3s ease}
+        .btn-ghost:hover{background:rgba(255,255,255,.06);border-color:rgba(139,92,246,.3)}
+        [data-theme="light"] .btn-ghost{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.08)}
+        [data-theme="light"] .btn-ghost:hover{background:rgba(0,0,0,.06)}
+        .input-dark{background:rgba(8,8,18,.9);border:1px solid rgba(255,255,255,.08);color:var(--text);transition:all .3s ease;border-radius:12px}
+        .input-dark:focus{border-color:rgba(139,92,246,.5);box-shadow:0 0 0 3px rgba(139,92,246,.1),0 0 20px rgba(139,92,246,.1);outline:none}
+        .input-dark::placeholder{color:rgba(148,163,184,.4)}
+        [data-theme="light"] .input-dark{background:rgba(248,250,252,.95);border-color:rgba(0,0,0,.1);color:#1e293b}
+        [data-theme="light"] .input-dark::placeholder{color:rgba(100,116,139,.5)}
+        .chip{cursor:pointer;transition:all .3s ease;user-select:none;border-radius:10px;font-weight:500}
+        .chip:hover{background:rgba(139,92,246,.15)!important;border-color:rgba(139,92,246,.3)!important}
+        .chip.active{background:rgba(139,92,246,.25)!important;border-color:rgba(139,92,246,.5)!important;color:#c4b5fd!important;box-shadow:0 0 15px rgba(139,92,246,.15)}
+        .loader{width:22px;height:22px;border:2.5px solid rgba(255,255,255,.15);border-top-color:#a78bfa;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .text-gradient{background:linear-gradient(135deg,#c084fc 0%,#818cf8 30%,#60a5fa 60%,#c084fc 100%);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shimmer 4s linear infinite}
+        @keyframes shimmer{0%{background-position:0% center}100%{background-position:300% center}}
+        .result-box{background:rgba(6,6,14,.95);border:1px solid rgba(255,255,255,.06);max-height:320px;overflow-y:auto;border-radius:12px}
+        [data-theme="light"] .result-box{background:rgba(248,250,252,.98);border-color:rgba(0,0,0,.06)}
+        .result-box::-webkit-scrollbar{width:4px}
+        .result-box::-webkit-scrollbar-track{background:transparent}
+        .result-box::-webkit-scrollbar-thumb{background:rgba(139,92,246,.3);border-radius:4px}
+        .service-card{background:rgba(12,12,24,.7);border:1px solid rgba(255,255,255,.05);border-radius:14px;transition:all .35s cubic-bezier(.4,0,.2,1);cursor:pointer}
+        .service-card:hover{border-color:rgba(139,92,246,.35);background:rgba(139,92,246,.06);box-shadow:0 4px 20px rgba(139,92,246,.08);transform:translateY(-3px) scale(1.02)}
+        .service-card:active{transform:translateY(0) scale(.98)}
+        [data-theme="light"] .service-card{background:rgba(255,255,255,.8);border-color:rgba(0,0,0,.06)}
+        .stat-card{background:linear-gradient(145deg,rgba(12,12,24,.95),rgba(18,18,35,.9));border:1px solid rgba(255,255,255,.05);border-radius:16px;position:relative;overflow:hidden}
+        .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--stat-color,#8b5cf6),transparent);opacity:.6}
+        [data-theme="light"] .stat-card{background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(248,250,252,.9));border-color:rgba(0,0,0,.06)}
+        .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);z-index:9999;transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .5s ease;opacity:0;pointer-events:none}
+        .toast.show{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto}
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:all .3s ease;overflow-y:auto;padding:20px}
+        .modal-overlay.active{opacity:1;pointer-events:auto}
+        .modal-content{transform:scale(.9) translateY(20px);transition:all .4s cubic-bezier(.4,0,.2,1);max-height:90vh;overflow-y:auto}
+        .modal-overlay.active .modal-content{transform:scale(1) translateY(0)}
+        .modal-content::-webkit-scrollbar{width:4px}
+        .modal-content::-webkit-scrollbar-thumb{background:rgba(139,92,246,.2);border-radius:4px}
+        .history-panel{position:fixed;top:0;right:0;height:100%;width:100%;max-width:440px;background:rgba(8,8,18,.98);backdrop-filter:blur(30px);border-left:1px solid rgba(255,255,255,.06);z-index:60;transform:translateX(100%);transition:transform .45s cubic-bezier(.4,0,.2,1);overflow-y:auto}
+        .history-panel.open{transform:translateX(0)}
+        [data-theme="light"] .history-panel{background:rgba(255,255,255,.98)}
+        .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:55;opacity:0;pointer-events:none;transition:all .3s ease}
+        .overlay.active{opacity:1;pointer-events:auto}
+        .fab{position:fixed;bottom:24px;right:24px;z-index:50;width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#8b5cf6,#6366f1);box-shadow:0 4px 20px rgba(139,92,246,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s ease}
+        .fab:hover{transform:scale(1.1) rotate(5deg);box-shadow:0 6px 30px rgba(139,92,246,.5)}
+        .tab-btn{padding:8px 16px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;transition:all .3s;border:1px solid transparent;background:transparent;color:var(--text-muted)}
+        .tab-btn.active{background:rgba(139,92,246,.15);border-color:rgba(139,92,246,.3);color:#c4b5fd}
+        .tab-btn:hover:not(.active){background:rgba(255,255,255,.05)}
+        .json-key{color:#c084fc}.json-str{color:#34d399}.json-num{color:#60a5fa}.json-bool{color:#f59e0b}.json-null{color:#94a3b8}
+        .json-toggle{cursor:pointer;user-select:none;display:inline-block;width:16px;text-align:center;color:#8b5cf6;font-weight:bold;font-size:11px}
+        .json-toggle:hover{color:#c084fc}
+        .json-collapsible{margin-left:16px;border-left:1px solid rgba(139,92,246,.15);padding-left:8px}
+        .json-collapsed{display:none}
+        .badge-pulse{animation:badgePulse 2s ease-in-out infinite}
+        @keyframes badgePulse{0%,100%{opacity:1}50%{opacity:.6}}
+        .consent-check{accent-color:#8b5cf6;width:18px;height:18px;cursor:pointer}
+        .latency-bar{height:4px;border-radius:4px;transition:width .5s ease}
+        .snippet-tab{padding:6px 14px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;border:1px solid transparent;background:transparent;color:var(--text-muted)}
+        .snippet-tab.active{background:rgba(139,92,246,.2);border-color:rgba(139,92,246,.3);color:#c4b5fd}
+        .batch-row{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;border:1px solid var(--border);margin-bottom:4px;font-size:12px;transition:all .3s}
+        .scan-match{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:6px;padding:2px 6px;color:#f87171;font-size:12px;cursor:pointer}
+        @media(max-width:640px){
+            .hero-title{font-size:1.6rem!important}
+            .hero-sub{font-size:.78rem!important}
+            .fab{bottom:16px;right:16px;width:48px;height:48px;border-radius:14px}
+            .stat-card{padding:8px!important}
+            .stat-card .stat-num{font-size:1.1rem!important}
+            .modal-content{margin:10px;max-height:85vh}
+        }
+        ::-webkit-scrollbar{width:6px}
+        ::-webkit-scrollbar-track{background:transparent}
+        ::-webkit-scrollbar-thumb{background:rgba(139,92,246,.15);border-radius:6px}
+        ::-webkit-scrollbar-thumb:hover{background:rgba(139,92,246,.3)}
+        .appear{opacity:0;transform:translateY(20px);animation:appearIn .6s ease forwards}
+        @keyframes appearIn{to{opacity:1;transform:translateY(0)}}
+        .appear-d1{animation-delay:.1s}.appear-d2{animation-delay:.2s}.appear-d3{animation-delay:.3s}.appear-d4{animation-delay:.4s}
+        .logo-glow{box-shadow:0 0 20px rgba(139,92,246,.3),0 0 40px rgba(139,92,246,.1);animation:logoGlow 3s ease-in-out infinite alternate}
+        @keyframes logoGlow{0%{box-shadow:0 0 20px rgba(139,92,246,.3),0 0 40px rgba(139,92,246,.1)}100%{box-shadow:0 0 25px rgba(99,102,241,.4),0 0 50px rgba(99,102,241,.15)}}
+        .error-explain{background:rgba(139,92,246,.05);border:1px solid rgba(139,92,246,.15);border-radius:12px;padding:12px 16px}
+        .header-row{display:flex;gap:8px;margin-bottom:6px;align-items:center}
+        .header-row input{flex:1}
+        .header-row button{flex-shrink:0}
+    </style>
+</head>
+<body class="bg-grid">
+    <div class="bg-animated"></div>
+
+    <!-- CONSENT MODAL -->
+    <div id="consentModal" class="modal-overlay active" style="z-index:200" onclick="event.stopPropagation()">
+        <div class="modal-content glass-card p-6 md:p-8 w-[92%] max-w-lg">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 via-indigo-500 to-blue-500 flex items-center justify-center text-white font-black text-2xl mx-auto mb-4 logo-glow">M</div>
+                <h2 class="text-2xl font-black text-gradient mb-2">MDH TESTER v3.0</h2>
+                <p class="text-sm text-gray-400">Ultimate Universal API Key Tester</p>
+            </div>
+            <div class="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4 mb-5">
+                <h3 class="text-sm font-bold text-yellow-400 mb-2 flex items-center gap-2">⚠️ Security Notice</h3>
+                <ul class="text-xs text-gray-400 space-y-1.5 leading-relaxed">
+                    <li>• All tests run <b class="text-yellow-300">client-side</b> in your browser</li>
+                    <li>• Your API keys are <b class="text-yellow-300">never sent</b> to any third-party server</li>
+                    <li>• Only test keys <b class="text-yellow-300">you own</b> or are authorized to test</li>
+                    <li>• Keys are masked before saving to history</li>
+                </ul>
+            </div>
+            <label class="flex items-start gap-3 mb-5 cursor-pointer select-none">
+                <input type="checkbox" id="consentCheck" class="consent-check mt-0.5">
+                <span class="text-xs text-gray-400 leading-relaxed">I confirm that I <b class="text-white">own or have authorization</b> to test the API keys I will enter. I understand the security implications.</span>
+            </label>
+            <button id="consentBtn" onclick="acceptConsent()" disabled class="btn-primary w-full py-3.5 rounded-xl text-white font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-30">
+                🚀 Launch MDH TESTER
+            </button>
+            <p class="text-center text-[10px] text-gray-600 mt-4">by <span class="text-violet-400 font-semibold">MDHojayfa</span> • <a href="https://t.me/MDHojayfa_bot" target="_blank" class="text-blue-400 hover:underline">@MDHojayfa_bot</a></p>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 backdrop-blur-xl border-b" style="background:rgba(6,6,14,.8);border-color:var(--border)">
+        <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 via-indigo-500 to-blue-500 flex items-center justify-center text-white font-black text-sm logo-glow">M</div>
+                <div>
+                    <h1 class="text-base font-extrabold tracking-tight" style="color:var(--text)">MDH TESTER</h1>
+                    <p class="text-[9px] -mt-0.5" style="color:var(--text-muted)">v3.0 by <span class="text-violet-400 font-semibold">MDHojayfa</span></p>
+                </div>
+            </div>
+            <div class="flex items-center gap-1.5">
+                <button onclick="toggleTheme()" class="btn-ghost p-2 rounded-xl" title="Toggle theme">
+                    <span id="themeIcon" class="text-sm">🌙</span>
+                </button>
+                <button onclick="openModal('scannerModal')" class="btn-ghost px-2.5 py-2 rounded-xl text-xs flex items-center gap-1 text-yellow-400 hover:text-yellow-300" title="Key Leak Scanner">
+                    🔍<span class="hidden md:inline">Scanner</span>
+                </button>
+                <button onclick="openModal('shareModal')" class="btn-ghost px-2.5 py-2 rounded-xl text-xs flex items-center gap-1 hidden sm:flex" style="color:var(--text-dim)">
+                    📤<span>Share</span>
+                </button>
+                <a href="https://t.me/MDHojayfa_bot" target="_blank" class="btn-ghost px-2.5 py-2 rounded-xl text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1">
+                    ✈️<span class="hidden sm:inline">Contact</span>
+                </a>
+                <button onclick="toggleHistory()" class="btn-ghost px-2.5 py-2 rounded-xl text-xs flex items-center gap-1" style="color:var(--text-dim)">
+                    🕐<span class="hidden sm:inline">History</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 pt-8 pb-4 md:pt-12 md:pb-6 text-center">
+            <div class="appear">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs mb-4" style="background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.2);color:#c4b5fd">
+                    <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                    Free & Open Source • Client-Side Only
+                </div>
+            </div>
+            <h2 class="hero-title text-3xl md:text-5xl font-black text-gradient mb-3 appear appear-d1 leading-tight">Universal API Key Tester</h2>
+            <p class="hero-sub text-sm md:text-base max-w-2xl mx-auto mb-6 appear appear-d2 leading-relaxed" style="color:var(--text-dim)">
+                Test & validate <span class="text-violet-400 font-bold" id="serviceCount">0</span> API services with full request inspector, batch testing, cURL/Python/Node snippets, key leak scanner & more.
+            </p>
+            <div class="grid grid-cols-4 gap-2 max-w-lg mx-auto appear appear-d3">
+                <div class="stat-card p-3 text-center" style="--stat-color:#8b5cf6"><div class="stat-num text-xl md:text-2xl font-black text-violet-400" id="totalTests">0</div><div class="text-[9px] md:text-[10px] font-medium mt-0.5" style="color:var(--text-muted)">Tests</div></div>
+                <div class="stat-card p-3 text-center" style="--stat-color:#22c55e"><div class="stat-num text-xl md:text-2xl font-black text-green-400" id="validCount">0</div><div class="text-[9px] md:text-[10px] font-medium mt-0.5" style="color:var(--text-muted)">Valid</div></div>
+                <div class="stat-card p-3 text-center" style="--stat-color:#ef4444"><div class="stat-num text-xl md:text-2xl font-black text-red-400" id="invalidCount">0</div><div class="text-[9px] md:text-[10px] font-medium mt-0.5" style="color:var(--text-muted)">Invalid</div></div>
+                <div class="stat-card p-3 text-center" style="--stat-color:#3b82f6"><div class="stat-num text-xl md:text-2xl font-black text-blue-400" id="avgLatency">0</div><div class="text-[9px] md:text-[10px] font-medium mt-0.5" style="color:var(--text-muted)">Avg ms</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN -->
+    <main class="max-w-7xl mx-auto px-4 pb-16">
+
+        <!-- MODE TABS -->
+        <div class="flex items-center gap-2 mb-4 appear appear-d4 flex-wrap">
+            <button class="tab-btn active" data-mode="single" onclick="switchMode('single')">⚡ Single Test</button>
+            <button class="tab-btn" data-mode="batch" onclick="switchMode('batch')">📦 Batch Test</button>
+            <button class="tab-btn" data-mode="custom" onclick="switchMode('custom')">🛠️ Custom Request</button>
+            <button class="tab-btn" data-mode="demo" onclick="switchMode('demo')">🎮 Demo Mode</button>
+        </div>
+
+        <!-- CATEGORY FILTERS -->
+        <div class="mb-4" id="categorySection">
+            <div class="flex flex-wrap gap-1.5" id="categoryFilters">
+                <div class="chip active px-2.5 py-1 text-xs border" style="background:rgba(20,20,35,.8);border-color:rgba(255,255,255,.08);color:var(--text-dim)" data-cat="all" onclick="filterCategory('all')">🌐 All</div>
+            </div>
+        </div>
+
+        <!-- SEARCH -->
+        <div class="mb-4">
+            <div class="relative">
+                <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2" style="color:var(--text-muted)" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <input type="text" id="searchInput" placeholder="Search providers... (Ctrl+K)" class="w-full input-dark pl-10 pr-4 py-3 text-sm" oninput="filterServices()">
+            </div>
+        </div>
+
+        <!-- ==================== SINGLE TEST MODE ==================== -->
+        <div id="singleMode">
+            <div class="glass-card p-5 md:p-6 mb-5" id="testerCard">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-7 h-7 rounded-lg flex items-center justify-center text-sm" style="background:rgba(139,92,246,.12)">🛡️</div>
+                    <h3 class="text-sm font-bold" style="color:var(--text)">Test Your API Key</h3>
+                    <div class="ml-auto flex items-center gap-2">
+                        <label class="text-[10px] flex items-center gap-1.5 cursor-pointer" style="color:var(--text-muted)">
+                            <input type="checkbox" id="sessionOnly" class="consent-check" style="width:14px;height:14px"> Session only
+                        </label>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest font-bold mb-1.5" style="color:var(--text-muted)">API Provider</label>
+                        <select id="apiProvider" class="w-full input-dark px-3 py-2.5 text-sm" onchange="onProviderChange()"><option value="">— Select Provider —</option></select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest font-bold mb-1.5" style="color:var(--text-muted)">API Key / Token</label>
+                        <div class="relative">
+                            <input type="password" id="apiKey" placeholder="Paste your API key..." class="w-full input-dark px-3 py-2.5 pr-20 text-sm mono">
+                            <div class="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5">
+                                <button onclick="pasteKey()" class="p-1.5 rounded-lg hover:bg-white/5 transition" style="color:var(--text-muted)" title="Paste">📋</button>
+                                <button onclick="toggleKeyVis()" class="p-1.5 rounded-lg hover:bg-white/5 transition" style="color:var(--text-muted)" title="Toggle visibility">👁️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="extraFields" class="mb-3 hidden"><div class="grid md:grid-cols-2 gap-3" id="extraFieldsContainer"></div></div>
+                <div id="providerInfo" class="mb-3 hidden">
+                    <div class="rounded-xl p-3 flex items-start gap-2" style="background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.12)">
+                        <span class="text-sm mt-0.5">💡</span>
+                        <p class="text-xs leading-relaxed" style="color:var(--text-dim)" id="providerInfoText"></p>
+                    </div>
+                </div>
+                <button id="testBtn" onclick="testApiKey()" class="btn-primary w-full py-3 rounded-xl text-white font-bold text-sm flex items-center justify-center gap-2">
+                    ⚡ Test API Key <kbd class="hidden sm:inline text-[10px] px-1.5 py-0.5 rounded bg-white/10 font-mono ml-2">Ctrl+Enter</kbd>
+                </button>
+            </div>
+        </div>
+
+        <!-- ==================== BATCH TEST MODE ==================== -->
+        <div id="batchMode" class="hidden">
+            <div class="glass-card p-5 md:p-6 mb-5">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-7 h-7 rounded-lg flex items-center justify-center text-sm" style="background:rgba(59,130,246,.12)">📦</div>
+                    <h3 class="text-sm font-bold" style="color:var(--text)">Batch Test Mode</h3>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-[10px] uppercase tracking-widest font-bold mb-1.5" style="color:var(--text-muted)">API Provider</label>
+                    <select id="batchProvider" class="w-full input-dark px-3 py-2.5 text-sm"><option value="">— Select Provider —</option></select>
+                </div>
+                <div class="mb-3">
+                    <label class="block text-[10px] uppercase tracking-widest font-bold mb-1.5" style="color:var(--text-muted)">API Keys (one per line)</label>
+                    <textarea id="batchKeys" rows="6" class="w-full input-dark px-3 py-2.5 text-sm mono" placeholder="sk-abc123...&#10;sk-def456...&#10;sk-ghi789..."></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest font-bold mb-1.5" style="color:var(--text-muted)">Concurrency</label>
+                        <select id="batchConcurrency" class="w-full input-dark px-3 py-2.5 text-sm">
+                            <option value="1">1 (Sequential)</option><option value="2">2</option><option value="3" selected>3</option><option value="5">5</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest font-bold mb-1.5" style="color:var(--text-muted)">Delay (ms)</label>
+                        <input type="number" id="batchDelay" value="500" min="0" step="100" class="w-full input-dark px-3 py-2.5 text-sm">
+                    </div>
+                </div>
+                <button onclick="runBatchTest()" class="btn-primary w-full py-3 rounded-xl text-white font-bold text-sm flex items-center justify-center gap-2" id="batchBtn">📦 Run Batch Test</button>
+                <div id="batchProgress" class="mt-4 hidden">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-semibold" style="color:var(--text-dim)" id="batchProgressText">0 / 0</span>
+                        <span class="text-xs" style="color:var(--text-muted)" id="batchStats"></span>
+                    </div>
+                    <div class="w-full h-2 rounded-full overflow-hidden" style="background:rgba(139,92,246,.1)">
+                        <div class="h-full rounded-full transition-all duration-300" style="background:linear-gradient(90deg,#8b5cf6,#6366f1);width:0%" id="batchBar"></div>
+                    </div>
+                </div>
+                <div id="batchResults" class="mt-4 space-y-2"></div>
+            </div>
+        </div>
+
+        <!-- ==================== CUSTOM REQUEST MODE ==================== -->
+        <div id="customMode" class="hidden">
+            <div class="glass-card p-5 md:p-6 mb-5">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-7 h-7 rounded-lg flex items-center justify-center text-sm" style="background:rgba(234,179,8,.12)">🛠️</div>
+                    <h3 class="text-sm font-bold" style="color:var(--text)">Custom Request Builder</h3>
+                </div>
+                <div class="grid md:grid-cols-4 gap-3 mb-3">
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest font-bold mb-1.5" style="color:var(--text-muted)">Method</label>
+                        <select id="customMethod" class="w-full input-dark px-3 py-2.5 text-sm">
+                            <option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option><option>HEAD</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-3">
+                        <label class="block text-[10px] uppercase tracking-widest font-bold mb-1.5" style="color:var(--text-muted)">URL</label>
+                        <input type="text" id="customUrl" placeholder="https://api.example.com/v1/endpoint" class="w-full input-dark px-3 py-2.5 text-sm mono">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label class="text-[10px] uppercase tracking-widest font-bold" style="color:var(--text-muted)">Headers</label>
+                        <button onclick="addCustomHeader()" class="text-[10px] text-violet-400 hover:text-violet-300 font-semibold">+ Add Header</button>
+                    </div>
+                    <div id="customHeaders">
+                        <div class="header-row">
+                            <input type="text" placeholder="Authorization" class="input-dark px-3 py-2 text-xs mono ch-key">
+                            <input type="text" placeholder="Bearer sk-..." class="input-dark px-3 py-2 text-xs mono ch-val">
+                            <button onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-300 text-sm p-1">✕</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3" id="customBodyWrap">
+                    <label class="block text-[10px] uppercase tracking-widest font-bold mb-1.5" style="color:var(--text-muted)">Body (JSON)</label>
+                    <textarea id="customBody" rows="4" class="w-full input-dark px-3 py-2.5 text-sm mono" placeholder='{"key": "value"}'></textarea>
+                    <p id="jsonError" class="text-[10px] text-red-400 mt-1 hidden">⚠️ Invalid JSON</p>
+                </div>
+                <button onclick="runCustomRequest()" class="btn-primary w-full py-3 rounded-xl text-white font-bold text-sm flex items-center justify-center gap-2" id="customBtn">🚀 Send Request</button>
+            </div>
+        </div>
+
+        <!-- ==================== DEMO MODE ==================== -->
+        <div id="demoMode" class="hidden">
+            <div class="glass-card p-5 md:p-6 mb-5">
+                <div class="flex items-center gap-2 mb-4">
+                    <div class="w-7 h-7 rounded-lg flex items-center justify-center text-sm" style="background:rgba(34,197,94,.12)">🎮</div>
+                    <h3 class="text-sm font-bold" style="color:var(--text)">Demo Mode — Try Without Keys</h3>
+                </div>
+                <p class="text-xs mb-4 leading-relaxed" style="color:var(--text-dim)">Test the interface with free public APIs. No API key needed!</p>
+                <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-2" id="demoApis"></div>
+            </div>
+        </div>
+
+        <!-- ==================== RESULT CARD ==================== -->
+        <div id="resultCard" class="glass-card p-5 md:p-6 mb-5 hidden">
+            <!-- Status bar -->
+            <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+                <div class="flex items-center gap-3">
+                    <div id="resultIcon" class="w-10 h-10 rounded-xl flex items-center justify-center text-lg"></div>
+                    <div>
+                        <h3 id="resultTitle" class="font-bold text-sm" style="color:var(--text)"></h3>
+                        <p id="resultSubtitle" class="text-[10px] mt-0.5" style="color:var(--text-muted)"></p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                    <span id="latencyBadge" class="text-[10px] px-2 py-1 rounded-lg font-bold" style="background:rgba(59,130,246,.1);color:#60a5fa"></span>
+                    <span id="statusBadge" class="text-[10px] px-2 py-1 rounded-lg font-bold"></span>
+                </div>
+            </div>
+
+            <!-- Latency bar -->
+            <div class="mb-4">
+                <div class="w-full h-1.5 rounded-full overflow-hidden" style="background:rgba(139,92,246,.08)">
+                    <div class="latency-bar h-full rounded-full" id="latencyBar"></div>
+                </div>
+            </div>
+
+            <!-- Result Tabs -->
+            <div class="flex items-center gap-1.5 mb-3 flex-wrap">
+                <button class="tab-btn active text-[11px] py-1.5 px-3" data-rtab="response" onclick="switchResultTab('response')">📄 Response</button>
+                <button class="tab-btn text-[11px] py-1.5 px-3" data-rtab="headers" onclick="switchResultTab('headers')">📋 Headers</button>
+                <button class="tab-btn text-[11px] py-1.5 px-3" data-rtab="request" onclick="switchResultTab('request')">📤 Request</button>
+                <button class="tab-btn text-[11px] py-1.5 px-3" data-rtab="snippets" onclick="switchResultTab('snippets')">💻 Snippets</button>
+                <button class="tab-btn text-[11px] py-1.5 px-3" data-rtab="explain" onclick="switchResultTab('explain')">💡 Explain</button>
+            </div>
+
+            <!-- Response Tab -->
+            <div id="rtab-response">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-[10px] font-bold uppercase tracking-widest" style="color:var(--text-muted)">Response Body</span>
+                    <div class="flex items-center gap-1">
+                        <button onclick="toggleJsonView()" class="text-[10px] px-2 py-1 rounded-lg font-semibold transition" style="color:var(--text-dim);background:rgba(139,92,246,.08)" id="jsonViewToggle">🌳 Tree</button>
+                        <button onclick="copyToClip(lastRawResponse,'Response copied!')" class="text-[10px] px-2 py-1 rounded-lg font-semibold transition" style="color:var(--text-dim);background:rgba(255,255,255,.05)">📋 Copy</button>
+                    </div>
+                </div>
+                <div id="resultDetails" class="result-box p-4 mono text-xs" style="color:var(--text-dim)"></div>
+            </div>
+
+            <!-- Headers Tab -->
+            <div id="rtab-headers" class="hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-[10px] font-bold uppercase tracking-widest" style="color:var(--text-muted)">Response Headers</span>
+                    <button onclick="copyToClip(lastResponseHeaders,'Headers copied!')" class="text-[10px] px-2 py-1 rounded-lg font-semibold" style="color:var(--text-dim);background:rgba(255,255,255,.05)">📋 Copy</button>
+                </div>
+                <div id="responseHeaders" class="result-box p-4 mono text-xs" style="color:var(--text-dim)"></div>
+            </div>
+
+            <!-- Request Tab -->
+            <div id="rtab-request" class="hidden">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-[10px] font-bold uppercase tracking-widest" style="color:var(--text-muted)">Request Details</span>
+                    <button onclick="copyToClip(lastRequestInfo,'Request copied!')" class="text-[10px] px-2 py-1 rounded-lg font-semibold" style="color:var(--text-dim);background:rgba(255,255,255,.05)">📋 Copy</button>
+                </div>
+                <div id="requestDetails" class="result-box p-4 mono text-xs" style="color:var(--text-dim)"></div>
+            </div>
+
+            <!-- Snippets Tab -->
+            <div id="rtab-snippets" class="hidden">
+                <div class="flex items-center gap-1.5 mb-2 flex-wrap">
+                    <button class="snippet-tab active" data-stab="curl" onclick="switchSnippetTab('curl')">cURL</button>
+                    <button class="snippet-tab" data-stab="node" onclick="switchSnippetTab('node')">Node.js</button>
+                    <button class="snippet-tab" data-stab="python" onclick="switchSnippetTab('python')">Python</button>
+                    <button class="snippet-tab" data-stab="github" onclick="switchSnippetTab('github')">GitHub CI</button>
+                    <button class="snippet-tab" data-stab="postman" onclick="switchSnippetTab('postman')">Postman</button>
+                </div>
+                <div class="relative">
+                    <div id="snippetContent" class="result-box p-4 mono text-xs" style="color:var(--text-dim)"></div>
+                    <button onclick="copyCurrentSnippet()" class="absolute top-2 right-2 text-[10px] px-2 py-1 rounded-lg font-semibold" style="color:var(--text-dim);background:rgba(139,92,246,.15)">📋 Copy</button>
+                </div>
+            </div>
+
+            <!-- Explain Tab -->
+            <div id="rtab-explain" class="hidden">
+                <div id="errorExplain" class="space-y-3"></div>
+            </div>
+
+            <!-- Bottom actions -->
+            <div class="flex items-center gap-2 mt-4 flex-wrap">
+                <button onclick="copyForSlack()" class="btn-ghost px-3 py-2 rounded-xl text-[11px] font-semibold flex items-center gap-1" style="color:var(--text-dim)">💼 Copy for Slack</button>
+                <button onclick="copyForGitHub()" class="btn-ghost px-3 py-2 rounded-xl text-[11px] font-semibold flex items-center gap-1" style="color:var(--text-dim)">🐙 Copy for GitHub</button>
+                <button onclick="shareResultLink()" class="btn-ghost px-3 py-2 rounded-xl text-[11px] font-semibold flex items-center gap-1" style="color:var(--text-dim)">🔗 Share Result</button>
+                <button onclick="downloadResult()" class="btn-ghost px-3 py-2 rounded-xl text-[11px] font-semibold flex items-center gap-1" style="color:var(--text-dim)">💾 Export JSON</button>
+            </div>
+        </div>
+
+        <!-- SERVICE GRID -->
+        <div class="mb-3 flex items-center justify-between">
+            <h3 class="text-xs font-bold uppercase tracking-widest" style="color:var(--text-muted)">Supported Services</h3>
+            <span class="text-[11px] font-medium" style="color:var(--text-muted)" id="visibleCount"></span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 mb-8" id="serviceGrid"></div>
+
+        <!-- Native Banner Ad -->
+        <div class="flex justify-center my-6">
+            <script async="async" data-cfasync="false" src="https://pl28281782.effectivegatecpm.com/1ff05805f1f1e254ff63bae30ac5d8e3/invoke.js"></script>
+            <div id="container-1ff05805f1f1e254ff63bae30ac5d8e3"></div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center py-8 border-t" style="border-color:var(--border)">
+            <div class="flex items-center justify-center gap-3 mb-3">
+                <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-indigo-500 flex items-center justify-center text-white font-black text-xs">M</div>
+                <span class="text-sm font-bold" style="color:var(--text)">MDH TESTER</span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full font-bold" style="background:rgba(139,92,246,.15);color:#c4b5fd">v3.0</span>
+            </div>
+            <p class="text-xs mb-2" style="color:var(--text-muted)">Created with ❤️ by <span class="text-violet-400 font-semibold">MDHojayfa</span></p>
+            <div class="flex items-center justify-center gap-4 mb-3">
+                <a href="https://t.me/MDHojayfa_bot" target="_blank" class="text-blue-400 hover:text-blue-300 transition text-xs flex items-center gap-1">✈️ @MDHojayfa_bot</a>
+                <button onclick="openModal('shareModal')" class="text-violet-400 hover:text-violet-300 transition text-xs flex items-center gap-1">📤 Share This Tool</button>
+            </div>
+            <p class="text-[10px]" style="color:var(--text-muted)">All tests run client-side. Keys never leave your browser. <a href="https://www.effectivegatecpm.com/ubwpc4s7mv?key=ff9651b0834c6a1eed53531fade074be" target="_blank" class="text-violet-500/40 hover:text-violet-400 transition">Support us</a></p>
+        </footer>
+    </main>
+
+    <!-- FAB -->
+    <div class="fab sm:hidden" onclick="openModal('shareModal')" title="Share">
+        <span class="text-xl">📤</span>
+    </div>
+
+    <!-- ==================== SHARE MODAL ==================== -->
+    <div id="shareModal" class="modal-overlay" onclick="if(event.target===this)closeModal('shareModal')">
+        <div class="modal-content glass-card p-6 w-[92%] max-w-md">
+            <div class="flex items-center justify-between mb-5">
+                <h3 class="text-base font-bold flex items-center gap-2" style="color:var(--text)">📤 Share MDH TESTER</h3>
+                <button onclick="closeModal('shareModal')" class="hover:text-white transition text-lg" style="color:var(--text-muted)">✕</button>
+            </div>
+            <div class="mb-4">
+                <label class="block text-[10px] uppercase tracking-widest font-bold mb-1.5" style="color:var(--text-muted)">Copy Link</label>
+                <div class="flex gap-2">
+                    <input type="text" value="https://mdhojayfa.github.io/mdhtester.html" readonly class="flex-1 input-dark px-3 py-2.5 text-xs mono" id="shareUrl">
+                    <button onclick="copyShareLink()" class="btn-primary px-4 py-2.5 rounded-xl text-xs font-bold text-white" id="copyLinkBtn">Copy</button>
+                </div>
+            </div>
+            <div class="mb-2">
+                <label class="block text-[10px] uppercase tracking-widest font-bold mb-2" style="color:var(--text-muted)">Share via</label>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="shareVia('twitter')" class="flex flex-col items-center gap-1.5 px-3 py-3 rounded-xl text-[11px] font-semibold transition" style="background:rgba(29,161,242,.08);border:1px solid rgba(29,161,242,.15);color:#1DA1F2">🐦 Twitter</button>
+                    <button onclick="shareVia('telegram')" class="flex flex-col items-center gap-1.5 px-3 py-3 rounded-xl text-[11px] font-semibold transition" style="background:rgba(0,136,204,.08);border:1px solid rgba(0,136,204,.15);color:#0088cc">✈️ Telegram</button>
+                    <button onclick="shareVia('whatsapp')" class="flex flex-col items-center gap-1.5 px-3 py-3 rounded-xl text-[11px] font-semibold transition" style="background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.15);color:#25D366">💬 WhatsApp</button>
+                    <button onclick="shareVia('linkedin')" class="flex flex-col items-center gap-1.5 px-3 py-3 rounded-xl text-[11px] font-semibold transition" style="background:rgba(0,119,181,.08);border:1px solid rgba(0,119,181,.15);color:#0077B5">💼 LinkedIn</button>
+                    <button onclick="shareVia('reddit')" class="flex flex-col items-center gap-1.5 px-3 py-3 rounded-xl text-[11px] font-semibold transition" style="background:rgba(255,69,0,.08);border:1px solid rgba(255,69,0,.15);color:#FF4500">🔴 Reddit</button>
+                    <button onclick="shareVia('email')" class="flex flex-col items-center gap-1.5 px-3 py-3 rounded-xl text-[11px] font-semibold transition" style="background:rgba(148,163,184,.08);border:1px solid rgba(148,163,184,.15);color:var(--text-dim)">📧 Email</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== KEY LEAK SCANNER MODAL ==================== -->
+    <div id="scannerModal" class="modal-overlay" onclick="if(event.target===this)closeModal('scannerModal')">
+        <div class="modal-content glass-card p-6 w-[92%] max-w-2xl">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-base font-bold flex items-center gap-2" style="color:var(--text)">🔍 API Key Leak Scanner</h3>
+                <button onclick="closeModal('scannerModal')" class="hover:text-white transition text-lg" style="color:var(--text-muted)">✕</button>
+            </div>
+            <p class="text-xs mb-3 leading-relaxed" style="color:var(--text-dim)">Paste code or text to detect potentially leaked API keys using pattern matching.</p>
+            <textarea id="scannerInput" rows="8" class="w-full input-dark px-3 py-2.5 text-sm mono mb-3" placeholder="Paste your code, config file, or text here..."></textarea>
+            <button onclick="runScanner()" class="btn-primary w-full py-3 rounded-xl text-white font-bold text-sm mb-3">🔍 Scan for Leaked Keys</button>
+            <div id="scannerResults" class="space-y-2"></div>
+        </div>
+    </div>
+
+    <!-- ==================== HISTORY PANEL ==================== -->
+    <div id="historyOverlay" class="overlay" onclick="toggleHistory()"></div>
+    <div id="historyPanel" class="history-panel">
+        <div class="p-5">
+            <div class="flex items-center justify-between mb-5">
+                <h3 class="text-base font-bold flex items-center gap-2" style="color:var(--text)">🕐 Test History</h3>
+                <div class="flex items-center gap-1.5">
+                    <button onclick="exportHistory('csv')" class="text-[10px] text-violet-400 hover:text-violet-300 px-2 py-1.5 rounded-lg font-semibold" style="background:rgba(139,92,246,.08)">CSV</button>
+                    <button onclick="exportHistory('json')" class="text-[10px] text-blue-400 hover:text-blue-300 px-2 py-1.5 rounded-lg font-semibold" style="background:rgba(59,130,246,.08)">JSON</button>
+                    <button onclick="exportHistory('postman')" class="text-[10px] text-yellow-400 hover:text-yellow-300 px-2 py-1.5 rounded-lg font-semibold" style="background:rgba(234,179,8,.08)">Postman</button>
+                    <button onclick="clearHistory()" class="text-[10px] text-red-400 hover:text-red-300 px-2 py-1.5 rounded-lg font-semibold" style="background:rgba(239,68,68,.08)">Clear</button>
+                    <button onclick="toggleHistory()" class="p-1" style="color:var(--text-muted)">✕</button>
+                </div>
+            </div>
+            <div id="historyList" class="space-y-2"></div>
+            <div id="emptyHistory" class="text-center py-12">
+                <div class="text-4xl mb-3">🕐</div>
+                <p class="text-sm font-medium" style="color:var(--text-muted)">No tests yet</p>
+                <p class="text-xs mt-1" style="color:var(--text-muted)">Test an API key to see your history</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast">
+        <div class="glass-card px-5 py-3 flex items-center gap-3 shadow-2xl">
+            <span id="toastIcon" class="text-lg"></span>
+            <span id="toastMsg" class="text-sm font-medium" style="color:var(--text)"></span>
+        </div>
+    </div>
+
+    <!-- Social Bar Ad -->
+    <script type="text/javascript" src="https://pl28281605.effectivegatecpm.com/55/cd/5e/55cd5eea223aebc7290d280ad29905d5.js"></script>
+
+    <script>
+    const SITE_URL='https://mdhojayfa.github.io/mdhtester.html';
+    const SITE_NAME='MDH TESTER';
+    const SITE_DESC='Test & validate 100+ API keys instantly — Ultimate universal API key tester by MDHojayfa';
+
+    // ============================== PROVIDERS ==============================
+    const API_PROVIDERS=[
+        // AI & ML
+        {id:'openai',name:'OpenAI',icon:'🤖',category:'AI & ML',info:'Test GPT/ChatGPT API keys (sk-...)',keyPrefix:'sk-',
+         test:(k)=>fetch('https://api.openai.com/v1/models',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'anthropic',name:'Anthropic Claude',icon:'🧠',category:'AI & ML',info:'Test Claude API keys',
+         test:(k)=>fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':k,'anthropic-version':'2023-06-01','Content-Type':'application/json'},body:JSON.stringify({model:'claude-3-haiku-20240307',max_tokens:1,messages:[{role:'user',content:'hi'}]})})},
+        {id:'gemini',name:'Google Gemini',icon:'💎',category:'AI & ML',info:'Test Gemini API keys',
+         test:(k)=>fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${k}`)},
+        {id:'groq',name:'Groq',icon:'⚡',category:'AI & ML',info:'Test Groq API keys (gsk_...)',
+         test:(k)=>fetch('https://api.groq.com/openai/v1/models',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'mistral',name:'Mistral AI',icon:'🌊',category:'AI & ML',info:'Test Mistral API keys',
+         test:(k)=>fetch('https://api.mistral.ai/v1/models',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'cohere',name:'Cohere',icon:'🔮',category:'AI & ML',info:'Test Cohere API keys',
+         test:(k)=>fetch('https://api.cohere.ai/v1/models',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'huggingface',name:'HuggingFace',icon:'🤗',category:'AI & ML',info:'Test HuggingFace tokens (hf_...)',
+         test:(k)=>fetch('https://huggingface.co/api/whoami-v2',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'replicate',name:'Replicate',icon:'🔁',category:'AI & ML',info:'Test Replicate tokens',
+         test:(k)=>fetch('https://api.replicate.com/v1/account',{headers:{'Authorization':`Token ${k}`}})},
+        {id:'stabilityai',name:'Stability AI',icon:'🎨',category:'AI & ML',info:'Test Stability AI keys',
+         test:(k)=>fetch('https://api.stability.ai/v1/user/account',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'openrouter',name:'OpenRouter',icon:'🛤️',category:'AI & ML',info:'Test OpenRouter API keys',
+         test:(k)=>fetch('https://openrouter.ai/api/v1/models',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'perplexity',name:'Perplexity AI',icon:'🔍',category:'AI & ML',info:'Test Perplexity API keys',
+         test:(k)=>fetch('https://api.perplexity.ai/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},body:JSON.stringify({model:'llama-3.1-sonar-small-128k-online',messages:[{role:'user',content:'hi'}],max_tokens:1})})},
+        {id:'together',name:'Together AI',icon:'🤝',category:'AI & ML',info:'Test Together AI API keys',
+         test:(k)=>fetch('https://api.together.xyz/v1/models',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'elevenlabs',name:'ElevenLabs',icon:'🎙️',category:'AI & ML',info:'Test ElevenLabs voice AI keys',
+         test:(k)=>fetch('https://api.elevenlabs.io/v1/user',{headers:{'xi-api-key':k}})},
+        {id:'deepl',name:'DeepL',icon:'🌍',category:'AI & ML',info:'Test DeepL translation API keys',
+         test:(k)=>fetch('https://api-free.deepl.com/v2/usage',{headers:{'Authorization':`DeepL-Auth-Key ${k}`}})},
+        {id:'assemblyai',name:'AssemblyAI',icon:'🎤',category:'AI & ML',info:'Test AssemblyAI keys',
+         test:(k)=>fetch('https://api.assemblyai.com/v2/transcript?limit=1',{headers:{'Authorization':k}})},
+        {id:'ai21',name:'AI21 Labs',icon:'🧪',category:'AI & ML',info:'Test AI21 Jurassic API keys',
+         test:(k)=>fetch('https://api.ai21.com/studio/v1/models',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'deepseek',name:'DeepSeek',icon:'🔬',category:'AI & ML',info:'Test DeepSeek API keys',
+         test:(k)=>fetch('https://api.deepseek.com/models',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'fireworks',name:'Fireworks AI',icon:'🎆',category:'AI & ML',info:'Test Fireworks AI keys',
+         test:(k)=>fetch('https://api.fireworks.ai/inference/v1/models',{headers:{'Authorization':`Bearer ${k}`}})},
+        // Cloud
+        {id:'digitalocean',name:'DigitalOcean',icon:'🐳',category:'Cloud',info:'Test DO personal access tokens',
+         test:(k)=>fetch('https://api.digitalocean.com/v2/account',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'heroku',name:'Heroku',icon:'🟪',category:'Cloud',info:'Test Heroku API keys',
+         test:(k)=>fetch('https://api.heroku.com/account',{headers:{'Authorization':`Bearer ${k}`,'Accept':'application/vnd.heroku+json; version=3'}})},
+        {id:'cloudflare',name:'Cloudflare',icon:'☁️',category:'Cloud',info:'Test Cloudflare API tokens',
+         test:(k)=>fetch('https://api.cloudflare.com/client/v4/user/tokens/verify',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'vercel',name:'Vercel',icon:'▲',category:'Cloud',info:'Test Vercel API tokens',
+         test:(k)=>fetch('https://api.vercel.com/v2/user',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'netlify',name:'Netlify',icon:'🌐',category:'Cloud',info:'Test Netlify access tokens',
+         test:(k)=>fetch('https://api.netlify.com/api/v1/user',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'render',name:'Render',icon:'🎯',category:'Cloud',info:'Test Render API keys',
+         test:(k)=>fetch('https://api.render.com/v1/owners',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'linode',name:'Linode/Akamai',icon:'🟢',category:'Cloud',info:'Test Linode API tokens',
+         test:(k)=>fetch('https://api.linode.com/v4/profile',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'vultr',name:'Vultr',icon:'🔵',category:'Cloud',info:'Test Vultr API keys',
+         test:(k)=>fetch('https://api.vultr.com/v2/account',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'railway',name:'Railway',icon:'🚂',category:'Cloud',info:'Test Railway API tokens',
+         test:(k)=>fetch('https://backboard.railway.app/graphql/v2',{method:'POST',headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},body:JSON.stringify({query:'{ me { id name } }'})})},
+        {id:'fly',name:'Fly.io',icon:'🪁',category:'Cloud',info:'Test Fly.io auth tokens',
+         test:(k)=>fetch('https://api.fly.io/graphql',{method:'POST',headers:{'Authorization':`Bearer ${k}`,'Content-Type':'application/json'},body:JSON.stringify({query:'{ viewer { email } }'})})},
+        {id:'hetzner',name:'Hetzner Cloud',icon:'🏗️',category:'Cloud',info:'Test Hetzner Cloud API tokens',
+         test:(k)=>fetch('https://api.hetzner.cloud/v1/servers?per_page=1',{headers:{'Authorization':`Bearer ${k}`}})},
+        // DevOps
+        {id:'github',name:'GitHub',icon:'🐙',category:'DevOps',info:'Test GitHub personal access tokens (ghp_...)',
+         test:(k)=>fetch('https://api.github.com/user',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'gitlab',name:'GitLab',icon:'🦊',category:'DevOps',info:'Test GitLab access tokens',
+         test:(k)=>fetch('https://gitlab.com/api/v4/user',{headers:{'PRIVATE-TOKEN':k}})},
+        {id:'bitbucket',name:'Bitbucket',icon:'🪣',category:'DevOps',info:'Test Bitbucket app passwords (user:password)',
+         test:(k)=>fetch('https://api.bitbucket.org/2.0/user',{headers:{'Authorization':`Basic ${btoa(k)}`}})},
+        {id:'npm',name:'NPM',icon:'📦',category:'DevOps',info:'Test NPM access tokens',
+         test:(k)=>fetch('https://registry.npmjs.org/-/npm/v1/user',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'dockerhub',name:'Docker Hub',icon:'🐋',category:'DevOps',info:'Test Docker Hub tokens',
+         test:(k)=>fetch('https://hub.docker.com/v2/user/',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'circleci',name:'CircleCI',icon:'⭕',category:'DevOps',info:'Test CircleCI API tokens',
+         test:(k)=>fetch('https://circleci.com/api/v2/me',{headers:{'Circle-Token':k}})},
+        {id:'sentry',name:'Sentry',icon:'🐛',category:'DevOps',info:'Test Sentry auth tokens',
+         test:(k)=>fetch('https://sentry.io/api/0/auth/',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'sonarcloud',name:'SonarCloud',icon:'🔊',category:'DevOps',info:'Test SonarCloud tokens',
+         test:(k)=>fetch('https://sonarcloud.io/api/authentication/validate',{headers:{'Authorization':`Basic ${btoa(k+':')}`}})},
+        // Communication
+        {id:'telegram',name:'Telegram Bot',icon:'📱',category:'Communication',info:'Test Telegram Bot API tokens',
+         test:(k)=>fetch(`https://api.telegram.org/bot${k}/getMe`)},
+        {id:'discord',name:'Discord Bot',icon:'💬',category:'Communication',info:'Test Discord Bot tokens',
+         test:(k)=>fetch('https://discord.com/api/v10/users/@me',{headers:{'Authorization':`Bot ${k}`}})},
+        {id:'slack',name:'Slack',icon:'💼',category:'Communication',info:'Test Slack tokens (xoxb-... or xoxp-...)',
+         test:(k)=>fetch(`https://slack.com/api/auth.test?token=${k}`)},
+        {id:'twilio',name:'Twilio',icon:'📞',category:'Communication',extraFields:[{id:'twilioSid',label:'Account SID',placeholder:'ACxxxxxxxx'}],info:'Enter Account SID + Auth Token',
+         test:(k,e)=>fetch(`https://api.twilio.com/2010-04-01/Accounts/${e.twilioSid}.json`,{headers:{'Authorization':`Basic ${btoa(e.twilioSid+':'+k)}`}})},
+        {id:'sendgrid',name:'SendGrid',icon:'📧',category:'Communication',info:'Test SendGrid API keys (SG....)',
+         test:(k)=>fetch('https://api.sendgrid.com/v3/user/profile',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'mailgun',name:'Mailgun',icon:'✉️',category:'Communication',info:'Test Mailgun API keys',
+         test:(k)=>fetch('https://api.mailgun.net/v3/domains',{headers:{'Authorization':`Basic ${btoa('api:'+k)}`}})},
+        {id:'postmark',name:'Postmark',icon:'📬',category:'Communication',info:'Test Postmark server tokens',
+         test:(k)=>fetch('https://api.postmarkapp.com/server',{headers:{'X-Postmark-Server-Token':k,'Accept':'application/json'}})},
+        {id:'resend',name:'Resend',icon:'📤',category:'Communication',info:'Test Resend email API keys (re_...)',
+         test:(k)=>fetch('https://api.resend.com/domains',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'vonage',name:'Vonage',icon:'📳',category:'Communication',extraFields:[{id:'vonageSecret',label:'API Secret',placeholder:'Secret'}],info:'Enter API Key + API Secret',
+         test:(k,e)=>fetch(`https://rest.nexmo.com/account/get-balance?api_key=${k}&api_secret=${e.vonageSecret}`)},
+        // Payment
+        {id:'stripe',name:'Stripe',icon:'💳',category:'Payment',info:'Test Stripe secret keys (sk_live/test_...)',
+         test:(k)=>fetch('https://api.stripe.com/v1/balance',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'paypal',name:'PayPal',icon:'🅿️',category:'Payment',extraFields:[{id:'paypalSecret',label:'Client Secret',placeholder:'Secret...'}],info:'Enter Client ID + Client Secret',
+         test:(k,e)=>fetch('https://api-m.paypal.com/v1/oauth2/token',{method:'POST',headers:{'Authorization':`Basic ${btoa(k+':'+e.paypalSecret)}`,'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=client_credentials'})},
+        {id:'square',name:'Square',icon:'⬛',category:'Payment',info:'Test Square access tokens',
+         test:(k)=>fetch('https://connect.squareup.com/v2/merchants',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'coinbase',name:'Coinbase',icon:'🪙',category:'Payment',info:'Test Coinbase API keys',
+         test:(k)=>fetch('https://api.coinbase.com/v2/user',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'lemonsqueezy',name:'Lemon Squeezy',icon:'🍋',category:'Payment',info:'Test Lemon Squeezy API keys',
+         test:(k)=>fetch('https://api.lemonsqueezy.com/v1/users/me',{headers:{'Authorization':`Bearer ${k}`,'Accept':'application/vnd.api+json'}})},
+        {id:'paddle',name:'Paddle',icon:'🏓',category:'Payment',info:'Test Paddle API keys',
+         test:(k)=>fetch('https://api.paddle.com/event-types',{headers:{'Authorization':`Bearer ${k}`}})},
+        // Data & Maps
+        {id:'googlemaps',name:'Google Maps',icon:'🗺️',category:'Data & Maps',info:'Test Google Maps API keys',
+         test:(k)=>fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=test&key=${k}`)},
+        {id:'mapbox',name:'Mapbox',icon:'📍',category:'Data & Maps',info:'Test Mapbox tokens',
+         test:(k)=>fetch(`https://api.mapbox.com/tokens/v2?access_token=${k}`)},
+        {id:'openweather',name:'OpenWeatherMap',icon:'🌤️',category:'Data & Maps',info:'Test OpenWeatherMap keys',
+         test:(k)=>fetch(`https://api.openweathermap.org/data/2.5/weather?q=London&appid=${k}`)},
+        {id:'newsapi',name:'NewsAPI',icon:'📰',category:'Data & Maps',info:'Test NewsAPI keys',
+         test:(k)=>fetch(`https://newsapi.org/v2/top-headlines?country=us&pageSize=1&apiKey=${k}`)},
+        {id:'ipinfo',name:'IPinfo',icon:'🌍',category:'Data & Maps',info:'Test IPinfo tokens',
+         test:(k)=>fetch(`https://ipinfo.io/json?token=${k}`)},
+        {id:'exchangerate',name:'ExchangeRate',icon:'💱',category:'Data & Maps',info:'Test ExchangeRate API keys',
+         test:(k)=>fetch(`https://v6.exchangerate-api.com/v6/${k}/latest/USD`)},
+        // Security
+        {id:'virustotal',name:'VirusTotal',icon:'🛡️',category:'Security',info:'Test VirusTotal API keys',
+         test:(k)=>fetch('https://www.virustotal.com/api/v3/users/me',{headers:{'x-apikey':k}})},
+        {id:'shodan',name:'Shodan',icon:'🔎',category:'Security',info:'Test Shodan API keys',
+         test:(k)=>fetch(`https://api.shodan.io/api-info?key=${k}`)},
+        {id:'abuseipdb',name:'AbuseIPDB',icon:'🚫',category:'Security',info:'Test AbuseIPDB keys',
+         test:(k)=>fetch('https://api.abuseipdb.com/api/v2/check?ipAddress=8.8.8.8',{headers:{'Key':k,'Accept':'application/json'}})},
+        {id:'securitytrails',name:'SecurityTrails',icon:'🔐',category:'Security',info:'Test SecurityTrails API keys',
+         test:(k)=>fetch('https://api.securitytrails.com/v1/ping',{headers:{'APIKEY':k}})},
+        {id:'hunter',name:'Hunter.io',icon:'🎯',category:'Security',info:'Test Hunter.io API keys',
+         test:(k)=>fetch(`https://api.hunter.io/v2/account?api_key=${k}`)},
+        {id:'urlscan',name:'URLScan.io',icon:'🌐',category:'Security',info:'Test URLScan.io API keys',
+         test:(k)=>fetch('https://urlscan.io/api/v1/search/?q=domain:example.com&size=1',{headers:{'API-Key':k}})},
+        // Productivity
+        {id:'notion',name:'Notion',icon:'📝',category:'Productivity',info:'Test Notion integration tokens',
+         test:(k)=>fetch('https://api.notion.com/v1/users/me',{headers:{'Authorization':`Bearer ${k}`,'Notion-Version':'2022-06-28'}})},
+        {id:'airtable',name:'Airtable',icon:'📊',category:'Productivity',info:'Test Airtable access tokens',
+         test:(k)=>fetch('https://api.airtable.com/v0/meta/whoami',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'asana',name:'Asana',icon:'📋',category:'Productivity',info:'Test Asana access tokens',
+         test:(k)=>fetch('https://app.asana.com/api/1.0/users/me',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'linear',name:'Linear',icon:'📐',category:'Productivity',info:'Test Linear API keys',
+         test:(k)=>fetch('https://api.linear.app/graphql',{method:'POST',headers:{'Authorization':k,'Content-Type':'application/json'},body:JSON.stringify({query:'{ viewer { id name } }'})})},
+        {id:'clickup',name:'ClickUp',icon:'✅',category:'Productivity',info:'Test ClickUp API tokens',
+         test:(k)=>fetch('https://api.clickup.com/api/v2/user',{headers:{'Authorization':k}})},
+        {id:'todoist',name:'Todoist',icon:'☑️',category:'Productivity',info:'Test Todoist API tokens',
+         test:(k)=>fetch('https://api.todoist.com/rest/v2/projects',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'trello',name:'Trello',icon:'📇',category:'Productivity',extraFields:[{id:'trelloToken',label:'Token',placeholder:'Token...'}],info:'Enter API Key + Token',
+         test:(k,e)=>fetch(`https://api.trello.com/1/members/me?key=${k}&token=${e.trelloToken}`)},
+        // Media
+        {id:'youtube',name:'YouTube Data',icon:'▶️',category:'Media',info:'Test YouTube Data API keys',
+         test:(k)=>fetch(`https://www.googleapis.com/youtube/v3/channels?part=id&mine=true&key=${k}`)},
+        {id:'spotify',name:'Spotify',icon:'🎵',category:'Media',extraFields:[{id:'spotifySecret',label:'Client Secret',placeholder:'Secret...'}],info:'Enter Client ID + Client Secret',
+         test:(k,e)=>fetch('https://accounts.spotify.com/api/token',{method:'POST',headers:{'Authorization':`Basic ${btoa(k+':'+e.spotifySecret)}`,'Content-Type':'application/x-www-form-urlencoded'},body:'grant_type=client_credentials'})},
+        {id:'unsplash',name:'Unsplash',icon:'📷',category:'Media',info:'Test Unsplash access keys',
+         test:(k)=>fetch('https://api.unsplash.com/me',{headers:{'Authorization':`Client-ID ${k}`}})},
+        {id:'giphy',name:'Giphy',icon:'🎞️',category:'Media',info:'Test Giphy API keys',
+         test:(k)=>fetch(`https://api.giphy.com/v1/gifs/trending?api_key=${k}&limit=1`)},
+        {id:'tmdb',name:'TMDB',icon:'🎬',category:'Media',info:'Test TMDB API keys',
+         test:(k)=>fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${k}`)},
+        {id:'imgur',name:'Imgur',icon:'🖼️',category:'Media',info:'Test Imgur Client IDs',
+         test:(k)=>fetch('https://api.imgur.com/3/credits',{headers:{'Authorization':`Client-ID ${k}`}})},
+        {id:'pexels',name:'Pexels',icon:'📸',category:'Media',info:'Test Pexels API keys',
+         test:(k)=>fetch('https://api.pexels.com/v1/curated?per_page=1',{headers:{'Authorization':k}})},
+        {id:'cloudinary',name:'Cloudinary',icon:'☁️',category:'Media',extraFields:[{id:'cloudSecret',label:'API Secret',placeholder:'Secret'}],info:'Enter API Key + Secret',
+         test:(k,e)=>fetch('https://api.cloudinary.com/v1_1/demo/resources/image?max_results=1',{headers:{'Authorization':`Basic ${btoa(k+':'+e.cloudSecret)}`}})},
+        // Analytics
+        {id:'mixpanel',name:'Mixpanel',icon:'📈',category:'Analytics',info:'Test Mixpanel API secrets',
+         test:(k)=>fetch('https://mixpanel.com/api/app/me',{headers:{'Authorization':`Basic ${btoa(k+':')}`}})},
+        {id:'posthog',name:'PostHog',icon:'🦔',category:'Analytics',info:'Test PostHog personal API keys',
+         test:(k)=>fetch('https://app.posthog.com/api/users/@me/',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'plausible',name:'Plausible',icon:'📊',category:'Analytics',info:'Test Plausible API keys',
+         test:(k)=>fetch('https://plausible.io/api/v1/stats/aggregate?site_id=dummy&period=day',{headers:{'Authorization':`Bearer ${k}`}})},
+        // Database
+        {id:'supabase',name:'Supabase',icon:'⚡',category:'Database',extraFields:[{id:'supaUrl',label:'Project URL',placeholder:'https://xxx.supabase.co'}],info:'Enter anon/service key + project URL',
+         test:(k,e)=>fetch(`${e.supaUrl}/rest/v1/`,{headers:{'apikey':k,'Authorization':`Bearer ${k}`}})},
+        {id:'firebase',name:'Firebase',icon:'🔥',category:'Database',info:'Test Firebase Web API keys',
+         test:(k)=>fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${k}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})})},
+        {id:'planetscale',name:'PlanetScale',icon:'🪐',category:'Database',info:'Test PlanetScale API tokens',
+         test:(k)=>fetch('https://api.planetscale.com/v1/organizations',{headers:{'Authorization':k}})},
+        {id:'mongodb',name:'MongoDB Atlas',icon:'🍃',category:'Database',extraFields:[{id:'mongoPriv',label:'Private Key',placeholder:'Private Key'}],info:'Enter Public + Private Key',
+         test:(k,e)=>fetch('https://cloud.mongodb.com/api/atlas/v1.0',{headers:{'Authorization':`Basic ${btoa(k+':'+e.mongoPriv)}`}})},
+        {id:'upstash',name:'Upstash',icon:'🔺',category:'Database',extraFields:[{id:'upstashUrl',label:'REST URL',placeholder:'https://xxx.upstash.io'}],info:'Enter token + REST URL',
+         test:(k,e)=>fetch(`${e.upstashUrl}/ping`,{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'neon',name:'Neon',icon:'🟢',category:'Database',info:'Test Neon Postgres API keys',
+         test:(k)=>fetch('https://console.neon.tech/api/v2/projects',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'turso',name:'Turso',icon:'🔷',category:'Database',info:'Test Turso platform API tokens',
+         test:(k)=>fetch('https://api.turso.tech/v1/organizations',{headers:{'Authorization':`Bearer ${k}`}})},
+        // Other
+        {id:'rapidapi',name:'RapidAPI',icon:'🚀',category:'Other',info:'Test RapidAPI keys',
+         test:(k)=>fetch('https://judge0-ce.p.rapidapi.com/about',{headers:{'X-RapidAPI-Key':k}})},
+        {id:'pagerduty',name:'PagerDuty',icon:'🚨',category:'Other',info:'Test PagerDuty API keys',
+         test:(k)=>fetch('https://api.pagerduty.com/users?limit=1',{headers:{'Authorization':`Token token=${k}`}})},
+        {id:'datadog',name:'Datadog',icon:'🐕',category:'Other',info:'Test Datadog API keys',
+         test:(k)=>fetch('https://api.datadoghq.com/api/v1/validate',{headers:{'DD-API-KEY':k}})},
+        {id:'webflow',name:'Webflow',icon:'🌊',category:'Other',info:'Test Webflow API tokens',
+         test:(k)=>fetch('https://api.webflow.com/v2/token/introspect',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'contentful',name:'Contentful',icon:'📄',category:'Other',extraFields:[{id:'cfSpace',label:'Space ID',placeholder:'Space ID'}],info:'Enter CDA token + Space ID',
+         test:(k,e)=>fetch(`https://cdn.contentful.com/spaces/${e.cfSpace}`,{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'figma',name:'Figma',icon:'🎨',category:'Other',info:'Test Figma personal access tokens',
+         test:(k)=>fetch('https://api.figma.com/v1/me',{headers:{'X-FIGMA-TOKEN':k}})},
+        {id:'zendesk',name:'Zendesk',icon:'💚',category:'Other',extraFields:[{id:'zdDomain',label:'Subdomain',placeholder:'yourcompany'},{id:'zdEmail',label:'Email',placeholder:'you@email.com'}],info:'Enter API token + subdomain + email',
+         test:(k,e)=>fetch(`https://${e.zdDomain}.zendesk.com/api/v2/users/me.json`,{headers:{'Authorization':`Basic ${btoa(e.zdEmail+'/token:'+k)}`}})},
+        {id:'freshdesk',name:'Freshdesk',icon:'🟩',category:'Other',extraFields:[{id:'fdDomain',label:'Domain',placeholder:'yourcompany'}],info:'Enter API key + domain',
+         test:(k,e)=>fetch(`https://${e.fdDomain}.freshdesk.com/api/v2/tickets?per_page=1`,{headers:{'Authorization':`Basic ${btoa(k+':X')}`}})},
+        {id:'calendly',name:'Calendly',icon:'📅',category:'Other',info:'Test Calendly personal access tokens',
+         test:(k)=>fetch('https://api.calendly.com/users/me',{headers:{'Authorization':`Bearer ${k}`}})},
+        {id:'livekit',name:'LiveKit',icon:'📹',category:'Other',info:'Test LiveKit API keys',
+         test:(k)=>fetch('https://cloud-api.livekit.io/api/project',{headers:{'Authorization':`Bearer ${k}`}})},
+    ];
+
+    // Demo APIs
+    const DEMO_APIS=[
+        {name:'JSONPlaceholder',icon:'📋',desc:'Fake REST API',url:'https://jsonplaceholder.typicode.com/posts/1',method:'GET'},
+        {name:'PokeAPI',icon:'⚡',desc:'Pokémon data',url:'https://pokeapi.co/api/v2/pokemon/pikachu',method:'GET'},
+        {name:'Cat Facts',icon:'🐱',desc:'Random cat facts',url:'https://catfact.ninja/fact',method:'GET'},
+        {name:'Dog API',icon:'🐕',desc:'Random dog images',url:'https://dog.ceo/api/breeds/image/random',method:'GET'},
+        {name:'Bored API',icon:'🎲',desc:'Random activities',url:'https://www.boredapi.com/api/activity',method:'GET'},
+        {name:'IP API',icon:'🌐',desc:'Your IP info',url:'https://ipapi.co/json/',method:'GET'},
+        {name:'HTTP Bin',icon:'🔧',desc:'HTTP test service',url:'https://httpbin.org/get',method:'GET'},
+        {name:'Joke API',icon:'😂',desc:'Random jokes',url:'https://v2.jokeapi.dev/joke/Programming?type=single',method:'GET'},
+        {name:'Quotes',icon:'💬',desc:'Random quotes',url:'https://api.quotable.io/random',method:'GET'},
+    ];
+
+    // Error explanations
+    const ERROR_EXPLAINS={
+        200:{title:'✅ 200 OK',severity:'success',desc:'The request succeeded. Your API key is valid and working correctly.',fixes:['Your key is authenticated and authorized','The endpoint responded with data','You can proceed to use this key in production']},
+        201:{title:'✅ 201 Created',severity:'success',desc:'Request succeeded and a resource was created.',fixes:['Your key has write permissions','Authentication is working correctly']},
+        400:{title:'⚠️ 400 Bad Request',severity:'warn',desc:'The server couldn\'t understand the request. The key may be valid but the request format is wrong.',fixes:['Check if required parameters are missing','Verify the request body format','The API key itself might still be valid']},
+        401:{title:'❌ 401 Unauthorized',severity:'error',desc:'Authentication failed. The API key is invalid, expired, or missing.',fixes:['Verify the key is copied correctly (no extra spaces)','Check if the key has expired','Regenerate a new key from the provider dashboard','Ensure you\'re using the right type of key (API key vs OAuth token)']},
+        403:{title:'🚫 403 Forbidden',severity:'error',desc:'The key is recognized but doesn\'t have permission for this resource.',fixes:['Check the key\'s permission scopes','Upgrade the key\'s access level in the provider dashboard','Verify the key is meant for this specific API/endpoint','Contact the provider for access']},
+        404:{title:'❓ 404 Not Found',severity:'warn',desc:'The endpoint wasn\'t found. Key may be valid but the URL is wrong.',fixes:['Check the API endpoint URL','Verify the API version in the URL','The key might still be valid']},
+        429:{title:'⏱️ 429 Rate Limited',severity:'warn',desc:'Too many requests. Your key is likely valid but you\'ve hit the rate limit.',fixes:['Wait before retrying (check Retry-After header)','Implement exponential backoff','Upgrade your API plan for higher limits','The key IS likely valid — just rate-limited']},
+        500:{title:'💥 500 Internal Server Error',severity:'error',desc:'The API server encountered an error. Not related to your key.',fixes:['Wait and retry — the server may be having issues','Check the provider\'s status page','This is a server-side issue, not your key']},
+        502:{title:'🔄 502 Bad Gateway',severity:'warn',desc:'Server received an invalid response from upstream.',fixes:['The server might be temporarily overloaded','Wait a few minutes and retry','Check provider status page']},
+        503:{title:'🔧 503 Service Unavailable',severity:'warn',desc:'The service is temporarily unavailable.',fixes:['The API is likely under maintenance','Check provider status page','Retry after some time']},
+    };
+
+    // Key patterns for scanner
+    const KEY_PATTERNS=[
+        {name:'OpenAI',regex:/sk-[A-Za-z0-9]{20,}/g,color:'#10b981'},
+        {name:'GitHub',regex:/ghp_[A-Za-z0-9]{36}/g,color:'#8b5cf6'},
+        {name:'GitHub OAuth',regex:/gho_[A-Za-z0-9]{36}/g,color:'#8b5cf6'},
+        {name:'Stripe Live',regex:/sk_live_[A-Za-z0-9]{24,}/g,color:'#ef4444'},
+        {name:'Stripe Test',regex:/sk_test_[A-Za-z0-9]{24,}/g,color:'#f59e0b'},
+        {name:'Slack Bot',regex:/xoxb-[0-9]{10,}-[A-Za-z0-9]+/g,color:'#6366f1'},
+        {name:'Slack User',regex:/xoxp-[0-9]{10,}-[A-Za-z0-9]+/g,color:'#6366f1'},
+        {name:'Telegram Bot',regex:/[0-9]{8,}:[A-Za-z0-9_-]{35}/g,color:'#0088cc'},
+        {name:'AWS Access Key',regex:/AKIA[0-9A-Z]{16}/g,color:'#f97316'},
+        {name:'AWS Secret',regex:/[A-Za-z0-9/+=]{40}/g,color:'#f97316'},
+        {name:'Google API',regex:/AIza[0-9A-Za-z_-]{35}/g,color:'#4285f4'},
+        {name:'HuggingFace',regex:/hf_[A-Za-z0-9]{34}/g,color:'#fbbf24'},
+        {name:'Groq',regex:/gsk_[A-Za-z0-9]{52,}/g,color:'#f97316'},
+        {name:'Discord Bot',regex:/[MN][A-Za-z0-9]{23,}\.[A-Za-z0-9_-]{6}\.[A-Za-z0-9_-]{27,}/g,color:'#5865f2'},
+        {name:'SendGrid',regex:/SG\.[A-Za-z0-9_-]{22}\.[A-Za-z0-9_-]{43}/g,color:'#1a82e2'},
+        {name:'Twilio',regex:/SK[a-f0-9]{32}/g,color:'#f22f46'},
+        {name:'NPM Token',regex:/npm_[A-Za-z0-9]{36}/g,color:'#cb3837'},
+        {name:'Vercel Token',regex:/[A-Za-z0-9]{24}/g,color:'#000'},
+        {name:'Generic Secret',regex:/(?:api[_-]?key|secret|token|password|auth)[=:]["']?\s*[A-Za-z0-9_\-./+=]{20,}/gi,color:'#94a3b8'},
+        {name:'Long Random String',regex:/[A-Za-z0-9_\-]{40,}/g,color:'#64748b'},
+    ];
+
+    // ============================== STATE ==============================
+    let testHistory=JSON.parse((localStorage.getItem('mdhHistory')||'[]'));
+    let stats=JSON.parse(localStorage.getItem('mdhStats')||'{"total":0,"valid":0,"invalid":0,"latencies":[]}');
+    let currentCategory='all';
+    let currentMode='single';
+    let lastRawResponse='';
+    let lastResponseHeaders='';
+    let lastRequestInfo='';
+    let lastRequestData={url:'',method:'',headers:{},body:''};
+    let lastStatus=0;
+    let jsonViewMode='raw';
+    let currentSnippetTab='curl';
+    let isDark=localStorage.getItem('mdhTheme')!=='light';
+
+    // ============================== INIT ==============================
+    function init(){
+        if(!isDark){document.documentElement.setAttribute('data-theme','light');document.getElementById('themeIcon').textContent='☀️';}
+        document.getElementById('serviceCount').textContent=API_PROVIDERS.length+'+';
+        document.getElementById('consentCheck').addEventListener('change',function(){document.getElementById('consentBtn').disabled=!this.checked;});
+        if(sessionStorage.getItem('mdhConsent')==='yes'){document.getElementById('consentModal').classList.remove('active');}
+        buildCategories();buildProviderSelect();buildBatchProviderSelect();renderServiceGrid();buildDemoApis();updateStats();renderHistory();
+        // Check URL for shared result
+        const params=new URLSearchParams(window.location.search);
+        if(params.get('r')){try{const r=JSON.parse(atob(params.get('r')));showToast('📋',`Shared result: ${r.provider} — ${r.status}`);}catch(e){}}
+        // Keyboard shortcuts
+        document.addEventListener('keydown',(e)=>{
+            if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();document.getElementById('searchInput').focus();}
+            if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();if(currentMode==='single')testApiKey();else if(currentMode==='custom')runCustomRequest();}
+            if(e.key==='Escape'){closeAllModals();if(document.getElementById('historyPanel').classList.contains('open'))toggleHistory();}
+        });
+    }
+
+    function acceptConsent(){
+        if(!document.getElementById('consentCheck').checked)return;
+        sessionStorage.setItem('mdhConsent','yes');
+        document.getElementById('consentModal').classList.remove('active');
+        showToast('🚀','Welcome to MDH TESTER v3.0!');
+    }
+
+    // ============================== THEME ==============================
+    function toggleTheme(){
+        isDark=!isDark;
+        document.documentElement.setAttribute('data-theme',isDark?'dark':'light');
+        document.getElementById('themeIcon').textContent=isDark?'🌙':'☀️';
+        localStorage.setItem('mdhTheme',isDark?'dark':'light');
+    }
+
+    // ============================== MODES ==============================
+    function switchMode(mode){
+        currentMode=mode;
+        document.querySelectorAll('.tab-btn[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+        ['singleMode','batchMode','customMode','demoMode'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+        document.getElementById(mode+'Mode').classList.remove('hidden');
+        document.getElementById('categorySection').classList.toggle('hidden',mode==='custom');
+    }
+
+    // ============================== BUILD UI ==============================
+    function buildCategories(){
+        const cats=[...new Set(API_PROVIDERS.map(p=>p.category))];
+        const container=document.getElementById('categoryFilters');
+        const emojis={'AI & ML':'🤖','Cloud':'☁️','DevOps':'⚙️','Communication':'💬','Payment':'💳','Data & Maps':'🗺️','Security':'🛡️','Productivity':'📋','Media':'🎬','Analytics':'📊','Database':'🗄️','Other':'📦'};
+        cats.forEach(cat=>{
+            const count=API_PROVIDERS.filter(p=>p.category===cat).length;
+            const d=document.createElement('div');
+            d.className='chip px-2.5 py-1 text-xs border';
+            d.style.cssText='background:rgba(20,20,35,.8);border-color:rgba(255,255,255,.08);color:var(--text-dim)';
+            d.dataset.cat=cat;d.onclick=()=>filterCategory(cat);
+            d.innerHTML=`${emojis[cat]||'📦'} ${cat} <span style="color:var(--text-muted)">${count}</span>`;
+            container.appendChild(d);
+        });
+    }
+
+    function buildProviderSelect(){
+        const s=document.getElementById('apiProvider');
+        const cats=[...new Set(API_PROVIDERS.map(p=>p.category))];
+        cats.forEach(cat=>{
+            const g=document.createElement('optgroup');g.label=cat;
+            API_PROVIDERS.filter(p=>p.category===cat).forEach(p=>{
+                const o=document.createElement('option');o.value=p.id;o.textContent=`${p.icon} ${p.name}`;g.appendChild(o);
+            });s.appendChild(g);
+        });
+    }
+
+    function buildBatchProviderSelect(){
+        const s=document.getElementById('batchProvider');
+        API_PROVIDERS.forEach(p=>{
+            if(!p.extraFields){const o=document.createElement('option');o.value=p.id;o.textContent=`${p.icon} ${p.name}`;s.appendChild(o);}
+        });
+    }
+
+    function buildDemoApis(){
+        const c=document.getElementById('demoApis');
+        DEMO_APIS.forEach(api=>{
+            const d=document.createElement('div');
+            d.className='service-card p-3 flex items-center gap-2.5';
+            d.onclick=()=>runDemoApi(api);
+            d.innerHTML=`<span class="text-xl">${api.icon}</span><div><div class="text-xs font-semibold" style="color:var(--text)">${api.name}</div><div class="text-[10px]" style="color:var(--text-muted)">${api.desc}</div></div>`;
+            c.appendChild(d);
+        });
+    }
+
+    function renderServiceGrid(){
+        const grid=document.getElementById('serviceGrid');
+        const search=(document.getElementById('searchInput')?.value||'').toLowerCase();
+        grid.innerHTML='';let count=0;
+        API_PROVIDERS.forEach(p=>{
+            const matchCat=currentCategory==='all'||p.category===currentCategory;
+            const matchSearch=!search||p.name.toLowerCase().includes(search)||p.category.toLowerCase().includes(search)||p.id.includes(search);
+            if(!matchCat||!matchSearch)return;count++;
+            const d=document.createElement('div');
+            d.className='service-card p-2.5 flex items-center gap-2';
+            d.onclick=()=>selectProvider(p.id);
+            d.innerHTML=`<span class="text-lg flex-shrink-0">${p.icon}</span><div class="min-w-0"><div class="text-[11px] font-semibold truncate" style="color:var(--text)">${p.name}</div><div class="text-[9px]" style="color:var(--text-muted)">${p.category}</div></div>`;
+            grid.appendChild(d);
+        });
+        document.getElementById('visibleCount').textContent=`${count} of ${API_PROVIDERS.length}`;
+    }
+
+    function selectProvider(id){
+        switchMode('single');
+        document.getElementById('apiProvider').value=id;
+        onProviderChange();
+        document.getElementById('apiKey').focus();
+        document.getElementById('testerCard').scrollIntoView({behavior:'smooth',block:'center'});
+    }
+
+    function filterCategory(cat){
+        currentCategory=cat;
+        document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c.dataset.cat===cat));
+        renderServiceGrid();
+    }
+    function filterServices(){renderServiceGrid();}
+
+    function onProviderChange(){
+        const id=document.getElementById('apiProvider').value;
+        const p=API_PROVIDERS.find(x=>x.id===id);
+        const info=document.getElementById('providerInfo');
+        const extra=document.getElementById('extraFields');
+        const ec=document.getElementById('extraFieldsContainer');
+        if(p?.info){document.getElementById('providerInfoText').textContent=p.info;info.classList.remove('hidden');}else{info.classList.add('hidden');}
+        if(p?.extraFields){ec.innerHTML='';p.extraFields.forEach(f=>{
+            const d=document.createElement('div');
+            d.innerHTML=`<label class="block text-[10px] uppercase tracking-widest font-bold mb-1.5" style="color:var(--text-muted)">${f.label}</label><input type="text" id="${f.id}" placeholder="${f.placeholder}" class="w-full input-dark px-3 py-2.5 text-sm mono">`;
+            ec.appendChild(d);
+        });extra.classList.remove('hidden');}else{extra.classList.add('hidden');ec.innerHTML='';}
+    }
+
+    function toggleKeyVis(){const i=document.getElementById('apiKey');i.type=i.type==='password'?'text':'password';}
+    async function pasteKey(){try{const t=await navigator.clipboard.readText();document.getElementById('apiKey').value=t;showToast('📋','Pasted from clipboard');}catch{showToast('⚠️','Clipboard access denied');}}
+
+    function addCustomHeader(){
+        const c=document.getElementById('customHeaders');
+        const d=document.createElement('div');d.className='header-row';
+        d.innerHTML=`<input type="text" placeholder="Header-Name" class="input-dark px-3 py-2 text-xs mono ch-key"><input type="text" placeholder="Value" class="input-dark px-3 py-2 text-xs mono ch-val"><button onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-300 text-sm p-1">✕</button>`;
+        c.appendChild(d);
+    }
+
+    // ============================== MASK KEY ==============================
+    function maskKey(k){if(!k)return'••••';if(k.length>12)return k.slice(0,5)+'••••••'+k.slice(-4);if(k.length>6)return k.slice(0,3)+'••••'+k.slice(-2);return '••••••';}
+
+    // ============================== SINGLE TEST ==============================
+    async function testApiKey(){
+        const providerId=document.getElementById('apiProvider').value;
+        const apiKey=document.getElementById('apiKey').value.trim();
+        if(!providerId){showToast('⚠️','Select a provider');return;}
+        if(!apiKey){showToast('⚠️','Enter an API key');return;}
+        const provider=API_PROVIDERS.find(p=>p.id===providerId);
+        const btn=document.getElementById('testBtn');
+        btn.disabled=true;btn.innerHTML='<span class="loader"></span> Testing...';
+        let extra={};
+        if(provider.extraFields)provider.extraFields.forEach(f=>{extra[f.id]=document.getElementById(f.id)?.value?.trim()||'';});
+        const masked=maskKey(apiKey);
+        const startTime=Date.now();
+        try{
+            const resp=await provider.test(apiKey,extra);
+            const latency=Date.now()-startTime;
+            let body='';try{body=await resp.text();}catch(e){}
+            let parsed=null;try{parsed=JSON.parse(body);}catch(e){}
+            // Build request info
+            lastRequestData={url:resp.url||'N/A',method:'GET/POST',headers:{'Authorization':'Bearer '+masked},body:''};
+            lastStatus=resp.status;
+            // Response headers
+            let rh='';resp.headers.forEach((v,k)=>{rh+=`${k}: ${v}\n`;});
+            lastResponseHeaders=rh||'(No headers captured — CORS restriction)';
+            lastRawResponse=parsed?JSON.stringify(parsed,null,2):body;
+            lastRequestInfo=`${resp.url||'URL hidden by CORS'}\nStatus: ${resp.status} ${resp.statusText}\nLatency: ${latency}ms\nProvider: ${provider.name}\nKey: ${masked}`;
+            if(resp.ok){
+                showResult('valid',`✅ Valid Key — ${provider.name}`,`${resp.status} • ${masked} • ${latency}ms`,latency,resp.status);
+                addHistory(provider,masked,'valid',resp.status,latency);stats.valid++;
+            }else if(resp.status===401||resp.status===403){
+                showResult('invalid',`❌ Invalid — ${provider.name}`,`${resp.status} • ${masked} • ${latency}ms`,latency,resp.status);
+                addHistory(provider,masked,'invalid',resp.status,latency);stats.invalid++;
+            }else if(resp.status===429){
+                showResult('warn',`⏱️ Rate Limited — ${provider.name}`,`${resp.status} • Key may be valid • ${latency}ms`,latency,resp.status);
+                addHistory(provider,masked,'ratelimit',resp.status,latency);stats.valid++;
+            }else{
+                showResult('unknown',`❓ Status ${resp.status} — ${provider.name}`,`${masked} • ${latency}ms`,latency,resp.status);
+                addHistory(provider,masked,'unknown',resp.status,latency);
+            }
+            stats.total++;stats.latencies=(stats.latencies||[]);stats.latencies.push(latency);if(stats.latencies.length>100)stats.latencies=stats.latencies.slice(-100);
+        }catch(err){
+            const latency=Date.now()-startTime;
+            lastRawResponse=`Error: ${err.message}\n\n💡 This is likely a CORS restriction. The API server doesn't allow browser requests.\n\n🔧 Solutions:\n1. Test from a backend/server environment\n2. Use a CORS proxy\n3. Check if the provider has a CORS-enabled endpoint\n4. Use cURL from terminal (see Snippets tab)`;
+            lastResponseHeaders='(Request failed — no headers)';
+            lastRequestInfo=`Provider: ${provider.name}\nKey: ${masked}\nError: ${err.message}\nLatency: ${latency}ms`;
+            lastStatus=0;
+            showResult('error',`💥 Error — ${provider.name}`,`CORS/Network • ${latency}ms`,latency,0);
+            stats.total++;stats.invalid++;
+            addHistory(provider,masked,'error','CORS',latency);
+        }
+        localStorage.setItem('mdhStats',JSON.stringify(stats));updateStats();
+        btn.disabled=false;btn.innerHTML='⚡ Test API Key <kbd class="hidden sm:inline text-[10px] px-1.5 py-0.5 rounded bg-white/10 font-mono ml-2">Ctrl+Enter</kbd>';
+    }
+
+    // ============================== RESULT DISPLAY ==============================
+    function showResult(type,title,subtitle,latency,status){
+        const card=document.getElementById('resultCard');
+        card.classList.remove('hidden','glow-green','glow-red','glow-yellow');
+        const cfg={valid:{bg:'background:rgba(34,197,94,.12)',glow:'glow-green',emoji:'✅',sbg:'background:rgba(34,197,94,.15);color:#22c55e'},invalid:{bg:'background:rgba(239,68,68,.12)',glow:'glow-red',emoji:'❌',sbg:'background:rgba(239,68,68,.15);color:#ef4444'},warn:{bg:'background:rgba(234,179,8,.12)',glow:'glow-yellow',emoji:'⚠️',sbg:'background:rgba(234,179,8,.15);color:#eab308'},unknown:{bg:'background:rgba(234,179,8,.12)',glow:'glow-yellow',emoji:'❓',sbg:'background:rgba(234,179,8,.15);color:#eab308'},error:{bg:'background:rgba(239,68,68,.12)',glow:'glow-red',emoji:'💥',sbg:'background:rgba(239,68,68,.15);color:#ef4444'}}[type]||{bg:'',glow:'',emoji:'❓',sbg:''};
+        card.classList.add(cfg.glow);
+        const icon=document.getElementById('resultIcon');icon.style.cssText=cfg.bg;icon.textContent=cfg.emoji;
+        document.getElementById('resultTitle').textContent=title;
+        document.getElementById('resultSubtitle').textContent=subtitle;
+        document.getElementById('latencyBadge').textContent=`${latency}ms`;
+        const sb=document.getElementById('statusBadge');sb.textContent=status?`HTTP ${status}`:'Error';sb.style.cssText=cfg.sbg;
+        // Latency bar
+        const maxLat=3000;const pct=Math.min((latency/maxLat)*100,100);
+        const lb=document.getElementById('latencyBar');
+        lb.style.width=pct+'%';
+        lb.style.background=latency<300?'#22c55e':latency<1000?'#eab308':'#ef4444';
+        // Response body
+        renderResponseBody();
+        // Response headers
+        document.getElementById('responseHeaders').textContent=lastResponseHeaders;
+        // Request details
+        document.getElementById('requestDetails').textContent=lastRequestInfo;
+        // Snippets
+        renderSnippets();
+        // Error explain
+        renderErrorExplain(status);
+        // Switch to response tab
+        switchResultTab('response');
+        card.scrollIntoView({behavior:'smooth',block:'nearest'});
+    }
+
+    function renderResponseBody(){
+        const el=document.getElementById('resultDetails');
+        if(jsonViewMode==='tree'){
+            try{const parsed=JSON.parse(lastRawResponse);el.innerHTML=buildJsonTree(parsed);}
+            catch{el.textContent=lastRawResponse;}
+        }else{el.textContent=lastRawResponse;}
+    }
+
+    function toggleJsonView(){
+        jsonViewMode=jsonViewMode==='raw'?'tree':'raw';
+        document.getElementById('jsonViewToggle').textContent=jsonViewMode==='tree'?'📝 Raw':'🌳 Tree';
+        renderResponseBody();
+    }
+
+    // ============================== JSON TREE VIEWER ==============================
+    function buildJsonTree(obj,depth=0){
+        if(obj===null)return '<span class="json-null">null</span>';
+        if(typeof obj==='boolean')return `<span class="json-bool">${obj}</span>`;
+        if(typeof obj==='number')return `<span class="json-num">${obj}</span>`;
+        if(typeof obj==='string')return `<span class="json-str">"${escH(obj.length>200?obj.slice(0,200)+'…':obj)}"</span>`;
+        const isArr=Array.isArray(obj);
+        const keys=Object.keys(obj);
+        if(keys.length===0)return isArr?'[]':'{}';
+        const id='jt'+Math.random().toString(36).slice(2,8);
+        let html=`<span class="json-toggle" onclick="toggleJsonNode('${id}')">▼</span>${isArr?'[':'{'}<div class="json-collapsible" id="${id}">`;
+        keys.forEach((k,i)=>{
+            const comma=i<keys.length-1?',':'';
+            if(isArr){html+=`<div>${buildJsonTree(obj[k],depth+1)}${comma}</div>`;}
+            else{html+=`<div><span class="json-key">"${escH(k)}"</span>: ${buildJsonTree(obj[k],depth+1)}${comma}</div>`;}
+        });
+        html+=`</div>${isArr?']':'}'}`;
+        return html;
+    }
+
+    function toggleJsonNode(id){
+        const el=document.getElementById(id);
+        if(!el)return;
+        const isHidden=el.classList.contains('json-collapsed');
+        el.classList.toggle('json-collapsed');
+        const toggle=el.previousElementSibling?.previousElementSibling;
+        if(toggle)toggle.textContent=isHidden?'▼':'▶';
+    }
+
+    function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+    // ============================== RESULT TABS ==============================
+    function switchResultTab(tab){
+        document.querySelectorAll('[data-rtab]').forEach(b=>b.classList.toggle('active',b.dataset.rtab===tab));
+        ['response','headers','request','snippets','explain'].forEach(t=>{
+            const el=document.getElementById('rtab-'+t);if(el)el.classList.toggle('hidden',t!==tab);
+        });
+    }
+
+    // ============================== SNIPPETS ==============================
+    function renderSnippets(){switchSnippetTab(currentSnippetTab);}
+
+    function switchSnippetTab(tab){
+        currentSnippetTab=tab;
+        document.querySelectorAll('.snippet-tab').forEach(b=>b.classList.toggle('active',b.dataset.stab===tab));
+        const el=document.getElementById('snippetContent');
+        const url=lastRequestData.url||'https://api.example.com/v1/endpoint';
+        const method=lastRequestData.method||'GET';
+        const key=document.getElementById('apiKey')?.value?.trim()||'YOUR_API_KEY';
+        const pid=document.getElementById('apiProvider')?.value;
+        const provider=API_PROVIDERS.find(p=>p.id===pid);
+        if(tab==='curl'){
+            let cmd=`curl -X GET "${url}" \\\n  -H "Authorization: Bearer ${maskKey(key)}"`;
+            el.textContent=cmd;
+        }else if(tab==='node'){
+            el.textContent=`const resp = await fetch("${url}", {\n  headers: {\n    "Authorization": "Bearer " + process.env.API_KEY\n  }\n});\nconst data = await resp.json();\nconsole.log(resp.status, data);`;
+        }else if(tab==='python'){
+            el.textContent=`import requests\nimport os\n\nresp = requests.get(\n    "${url}",\n    headers={"Authorization": f"Bearer {os.environ['API_KEY']}"}\n)\nprint(resp.status_code, resp.json())`;
+        }else if(tab==='github'){
+            el.textContent=`# .github/workflows/api-check.yml\nname: API Key Check\non:\n  schedule:\n    - cron: '0 8 * * *'\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n      - name: Test API Key\n        run: |\n          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \\\n            -H "Authorization: Bearer \${{ secrets.API_KEY }}" \\\n            "${url}")\n          echo "Status: $STATUS"\n          if [ "$STATUS" != "200" ]; then\n            echo "::error::API key check failed with status $STATUS"\n            exit 1\n          fi`;
+        }else if(tab==='postman'){
+            const collection={info:{name:`${provider?.name||'API'} Test`,schema:'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'},item:[{name:`Test ${provider?.name||'API'}`,request:{method:'GET',header:[{key:'Authorization',value:'Bearer {{api_key}}'}],url:{raw:url}}}],variable:[{key:'api_key',value:''}]};
+            el.textContent=JSON.stringify(collection,null,2);
+        }
+    }
+
+    function copyCurrentSnippet(){
+        const t=document.getElementById('snippetContent').textContent;
+        copyToClip(t,'Snippet copied!');
+    }
+
+    // ============================== ERROR EXPLAIN ==============================
+    function renderErrorExplain(status){
+        const el=document.getElementById('errorExplain');
+        const info=ERROR_EXPLAINS[status];
+        if(!info){
+            el.innerHTML=`<div class="error-explain"><h4 class="text-sm font-bold mb-2" style="color:var(--text)">📋 Status ${status||'N/A'}</h4><p class="text-xs" style="color:var(--text-dim)">No specific explanation available for this status code. Check the Response tab for details.</p></div>`;
+            // CORS explanation
+            if(!status){
+                el.innerHTML+=`<div class="error-explain mt-3"><h4 class="text-sm font-bold mb-2 text-yellow-400">🌐 CORS Explanation</h4><p class="text-xs mb-2" style="color:var(--text-dim)">Cross-Origin Resource Sharing (CORS) blocks browser requests to APIs that don't explicitly allow it.</p><ul class="text-xs space-y-1" style="color:var(--text-dim)"><li>• The API server must send <code class="text-violet-400">Access-Control-Allow-Origin</code> header</li><li>• Most APIs are designed for server-to-server, not browser use</li><li>• Use the <b>Snippets tab</b> to get cURL/Node/Python code instead</li><li>• A CORS error does NOT mean your key is invalid</li></ul></div>`;
+            }
+            return;
+        }
+        const colors={success:'border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.05)',warn:'border-color:rgba(234,179,8,.3);background:rgba(234,179,8,.05)',error:'border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.05)'};
+        el.innerHTML=`<div class="error-explain" style="${colors[info.severity]||''}"><h4 class="text-sm font-bold mb-2" style="color:var(--text)">${info.title}</h4><p class="text-xs mb-3" style="color:var(--text-dim)">${info.desc}</p><div class="space-y-1.5">${info.fixes.map(f=>`<div class="flex items-start gap-2 text-xs" style="color:var(--text-dim)"><span class="mt-0.5">→</span><span>${f}</span></div>`).join('')}</div></div>`;
+    }
+
+    // ============================== COPY HELPERS ==============================
+    function copyToClip(text,msg){navigator.clipboard.writeText(text).then(()=>showToast('✅',msg||'Copied!'));}
+
+    function copyForSlack(){
+        const pid=document.getElementById('apiProvider')?.value;
+        const p=API_PROVIDERS.find(x=>x.id===pid);
+        const text=`*API Key Test Result*\n> Provider: ${p?.name||'Custom'}\n> Status: HTTP ${lastStatus}\n> Result: ${lastStatus>=200&&lastStatus<300?'✅ Valid':'❌ Invalid/Error'}\n> Tested via MDH TESTER — ${SITE_URL}`;
+        copyToClip(text,'Copied for Slack!');
+    }
+
+    function copyForGitHub(){
+        const pid=document.getElementById('apiProvider')?.value;
+        const p=API_PROVIDERS.find(x=>x.id===pid);
+        const text=`### API Key Test Result\n| Field | Value |\n|-------|-------|\n| Provider | ${p?.name||'Custom'} |\n| Status | \`${lastStatus}\` |\n| Result | ${lastStatus>=200&&lastStatus<300?'✅ Valid':'❌ Invalid/Error'} |\n\n> Tested via [MDH TESTER](${SITE_URL})`;
+        copyToClip(text,'Copied for GitHub!');
+    }
+
+    function shareResultLink(){
+        const pid=document.getElementById('apiProvider')?.value;
+        const p=API_PROVIDERS.find(x=>x.id===pid);
+        const data=btoa(JSON.stringify({provider:p?.name||'Custom',status:lastStatus,ts:Date.now()}));
+        const url=SITE_URL+'?r='+data;
+        copyToClip(url,'Shareable link copied!');
+    }
+
+    function downloadResult(){
+        const pid=document.getElementById('apiProvider')?.value;
+        const p=API_PROVIDERS.find(x=>x.id===pid);
+        const data={provider:p?.name||'Custom',status:lastStatus,response:lastRawResponse,headers:lastResponseHeaders,request:lastRequestInfo,timestamp:new Date().toISOString()};
+        const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+        const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`mdh-test-${p?.id||'custom'}-${Date.now()}.json`;a.click();
+        showToast('💾','Result exported!');
+    }
+
+    // ============================== BATCH TEST ==============================
+    async function runBatchTest(){
+        const pid=document.getElementById('batchProvider').value;
+        if(!pid){showToast('⚠️','Select a provider');return;}
+        const keys=document.getElementById('batchKeys').value.trim().split('\n').map(k=>k.trim()).filter(k=>k);
+        if(!keys.length){showToast('⚠️','Enter at least one key');return;}
+        const provider=API_PROVIDERS.find(p=>p.id===pid);
+        const concurrency=parseInt(document.getElementById('batchConcurrency').value);
+        const delay=parseInt(document.getElementById('batchDelay').value)||0;
+        const btn=document.getElementById('batchBtn');
+        btn.disabled=true;btn.innerHTML='<span class="loader"></span> Testing...';
+        const progress=document.getElementById('batchProgress');
+        progress.classList.remove('hidden');
+        const results=document.getElementById('batchResults');results.innerHTML='';
+        let done=0,valid=0,invalid=0,errors=0;
+        const total=keys.length;
+
+        async function testOne(key){
+            const masked=maskKey(key);
+            try{
+                const resp=await provider.test(key,{});
+                const ok=resp.ok;
+                if(ok)valid++;else if(resp.status===401||resp.status===403)invalid++;else valid++;
+                const row=document.createElement('div');
+                row.className='batch-row';
+                row.style.cssText=ok?'background:rgba(34,197,94,.06);border-color:rgba(34,197,94,.2)':'background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2)';
+                row.innerHTML=`<span class="text-sm">${ok?'✅':'❌'}</span><span class="mono text-xs flex-1 truncate" style="color:var(--text)">${masked}</span><span class="text-[10px] font-bold" style="color:${ok?'#22c55e':'#ef4444'}">${resp.status}</span>`;
+                results.appendChild(row);
+            }catch(e){
+                errors++;
+                const row=document.createElement('div');row.className='batch-row';
+                row.style.cssText='background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.2)';
+                row.innerHTML=`<span class="text-sm">💥</span><span class="mono text-xs flex-1 truncate" style="color:var(--text)">${masked}</span><span class="text-[10px] font-bold text-red-400">CORS</span>`;
+                results.appendChild(row);
+            }
+            done++;
+            document.getElementById('batchProgressText').textContent=`${done} / ${total}`;
+            document.getElementById('batchBar').style.width=((done/total)*100)+'%';
+            document.getElementById('batchStats').textContent=`✅${valid} ❌${invalid} 💥${errors}`;
+        }
+
+        // Concurrency pool
+        let i=0;
+        async function runNext(){
+            if(i>=keys.length)return;
+            const idx=i++;
+            await testOne(keys[idx]);
+            if(delay>0)await new Promise(r=>setTimeout(r,delay));
+            await runNext();
+        }
+        const workers=[];
+        for(let w=0;w<Math.min(concurrency,keys.length);w++){workers.push(runNext());}
+        await Promise.all(workers);
+
+        btn.disabled=false;btn.innerHTML='📦 Run Batch Test';
+        showToast('✅',`Batch complete: ${valid} valid, ${invalid} invalid, ${errors} errors`);
+        stats.total+=total;stats.valid+=valid;stats.invalid+=invalid+errors;
+        localStorage.setItem('mdhStats',JSON.stringify(stats));updateStats();
+    }
+
+    // ============================== CUSTOM REQUEST ==============================
+    async function runCustomRequest(){
+        const method=document.getElementById('customMethod').value;
+        const url=document.getElementById('customUrl').value.trim();
+        if(!url){showToast('⚠️','Enter a URL');return;}
+        const bodyText=document.getElementById('customBody').value.trim();
+        const jsonErr=document.getElementById('jsonError');jsonErr.classList.add('hidden');
+        if(bodyText&&['POST','PUT','PATCH'].includes(method)){
+            try{JSON.parse(bodyText);}catch{jsonErr.classList.remove('hidden');showToast('⚠️','Invalid JSON body');return;}
+        }
+        // Collect headers
+        const headers={};
+        document.querySelectorAll('.header-row').forEach(row=>{
+            const k=row.querySelector('.ch-key')?.value?.trim();
+            const v=row.querySelector('.ch-val')?.value?.trim();
+            if(k&&v)headers[k]=v;
+        });
+        const btn=document.getElementById('customBtn');
+        btn.disabled=true;btn.innerHTML='<span class="loader"></span> Sending...';
+        const fetchOpts={method,headers};
+        if(bodyText&&['POST','PUT','PATCH'].includes(method)){fetchOpts.body=bodyText;if(!headers['Content-Type'])headers['Content-Type']='application/json';}
+        lastRequestData={url,method,headers,body:bodyText};
+        const startTime=Date.now();
+        try{
+            const resp=await fetch(url,fetchOpts);
+            const latency=Date.now()-startTime;
+            let body='';try{body=await resp.text();}catch{}
+            let parsed=null;try{parsed=JSON.parse(body);}catch{}
+            lastStatus=resp.status;
+            let rh='';resp.headers.forEach((v,k)=>{rh+=`${k}: ${v}\n`;});
+            lastResponseHeaders=rh||'(No headers)';
+            lastRawResponse=parsed?JSON.stringify(parsed,null,2):body;
+            lastRequestInfo=`${method} ${url}\nStatus: ${resp.status} ${resp.statusText}\nLatency: ${latency}ms\nHeaders sent: ${JSON.stringify(headers,null,2)}${bodyText?'\nBody: '+bodyText:''}`;
+            const type=resp.ok?'valid':resp.status===401||resp.status===403?'invalid':resp.status===429?'warn':'unknown';
+            showResult(type,`${resp.ok?'✅':'❌'} ${resp.status} ${resp.statusText}`,`${method} • ${latency}ms`,latency,resp.status);
+            stats.total++;if(resp.ok)stats.valid++;else stats.invalid++;
+        }catch(err){
+            const latency=Date.now()-startTime;
+            lastRawResponse=`Error: ${err.message}`;lastResponseHeaders='(Failed)';lastStatus=0;
+            lastRequestInfo=`${method} ${url}\nError: ${err.message}`;
+            showResult('error',`💥 Request Failed`,`${err.message} • ${latency}ms`,latency,0);
+            stats.total++;stats.invalid++;
+        }
+        localStorage.setItem('mdhStats',JSON.stringify(stats));updateStats();
+        btn.disabled=false;btn.innerHTML='🚀 Send Request';
+    }
+
+    // ============================== DEMO MODE ==============================
+    async function runDemoApi(api){
+        lastRequestData={url:api.url,method:api.method,headers:{},body:''};
+        const startTime=Date.now();
+        try{
+            const resp=await fetch(api.url);
+            const latency=Date.now()-startTime;
+            let body='';try{body=await resp.text();}catch{}
+            let parsed=null;try{parsed=JSON.parse(body);}catch{}
+            lastStatus=resp.status;
+            let rh='';resp.headers.forEach((v,k)=>{rh+=`${k}: ${v}\n`;});
+            lastResponseHeaders=rh;
+            lastRawResponse=parsed?JSON.stringify(parsed,null,2):body;
+            lastRequestInfo=`GET ${api.url}\nStatus: ${resp.status}\nLatency: ${latency}ms`;
+            showResult('valid',`✅ ${api.name} — ${resp.status}`,`Demo • ${latency}ms`,latency,resp.status);
+        }catch(err){
+            const latency=Date.now()-startTime;
+            lastRawResponse=`Error: ${err.message}`;lastResponseHeaders='(Failed)';lastStatus=0;
+            lastRequestInfo=`GET ${api.url}\nError: ${err.message}`;
+            showResult('error',`💥 ${api.name} Failed`,`${err.message}`,latency,0);
+        }
+    }
+
+    // ============================== KEY LEAK SCANNER ==============================
+    function runScanner(){
+        const input=document.getElementById('scannerInput').value;
+        if(!input.trim()){showToast('⚠️','Paste some code to scan');return;}
+        const results=document.getElementById('scannerResults');results.innerHTML='';
+        let totalFound=0;
+        KEY_PATTERNS.forEach(pattern=>{
+            const matches=input.match(pattern.regex);
+            if(matches){
+                const unique=[...new Set(matches)].filter(m=>m.length>=16&&m.length<=200);
+                if(unique.length===0)return;
+                totalFound+=unique.length;
+                const div=document.createElement('div');
+                div.style.cssText=`background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);border-radius:12px;padding:12px`;
+                div.innerHTML=`<div class="flex items-center gap-2 mb-2"><span class="text-sm">🚨</span><span class="text-xs font-bold" style="color:var(--text)">${pattern.name}</span><span class="text-[10px] px-2 py-0.5 rounded-full font-bold" style="background:rgba(239,68,68,.15);color:#ef4444">${unique.length} found</span></div><div class="space-y-1">${unique.slice(0,10).map(m=>`<div class="scan-match mono" onclick="copyToClip('${escH(m)}','Key copied!')" title="Click to copy">${escH(maskKey(m))}</div>`).join('')}</div>`;
+                results.appendChild(div);
+            }
+        });
+        if(totalFound===0){
+            results.innerHTML=`<div class="text-center py-6"><div class="text-3xl mb-2">✅</div><p class="text-sm font-medium" style="color:var(--text)">No API keys detected!</p><p class="text-xs mt-1" style="color:var(--text-muted)">Your code appears clean of leaked credentials.</p></div>`;
+        }else{
+            const summary=document.createElement('div');
+            summary.style.cssText='background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:12px;padding:12px;margin-bottom:8px';
+            summary.innerHTML=`<div class="flex items-center gap-2"><span class="text-lg">⚠️</span><div><p class="text-sm font-bold text-red-400">${totalFound} potential key(s) detected!</p><p class="text-xs mt-0.5" style="color:var(--text-dim)">Review and rotate any exposed keys immediately.</p></div></div>`;
+            results.insertBefore(summary,results.firstChild);
+        }
+        showToast(totalFound>0?'🚨':'✅',totalFound>0?`${totalFound} potential keys found!`:'No keys detected');
+    }
+
+    // ============================== HISTORY ==============================
+    function addHistory(provider,masked,status,code,latency){
+        const storage=document.getElementById('sessionOnly')?.checked?'session':'local';
+        const entry={id:Date.now(),provider:provider.name,icon:provider.icon,providerId:provider.id,key:masked,status,code,latency:latency||0,time:new Date().toLocaleString()};
+        testHistory.unshift(entry);
+        if(testHistory.length>200)testHistory=testHistory.slice(0,200);
+        if(storage==='local')localStorage.setItem('mdhHistory',JSON.stringify(testHistory));
+        renderHistory();
+    }
+
+    function renderHistory(){
+        const list=document.getElementById('historyList');
+        const empty=document.getElementById('emptyHistory');
+        list.innerHTML='';
+        if(testHistory.length===0){empty.classList.remove('hidden');return;}
+        empty.classList.add('hidden');
+        const colors={valid:'background:rgba(34,197,94,.1);color:#22c55e',invalid:'background:rgba(239,68,68,.1);color:#ef4444',ratelimit:'background:rgba(234,179,8,.1);color:#eab308',unknown:'background:rgba(148,163,184,.1);color:#94a3b8',error:'background:rgba(239,68,68,.1);color:#ef4444'};
+        const labels={valid:'Valid',invalid:'Invalid',ratelimit:'Rate Limit',unknown:'Unknown',error:'Error'};
+        testHistory.forEach(h=>{
+            const d=document.createElement('div');
+            d.style.cssText='background:rgba(15,15,28,.9);border:1px solid var(--border);border-radius:12px;padding:10px;transition:all .3s';
+            d.innerHTML=`<div class="flex items-center justify-between mb-1"><div class="flex items-center gap-2"><span class="text-sm">${h.icon}</span><span class="text-xs font-semibold" style="color:var(--text)">${h.provider}</span></div><span class="text-[10px] px-2 py-0.5 rounded-full font-semibold" style="${colors[h.status]||colors.unknown}">${labels[h.status]||'?'}</span></div><div class="flex items-center justify-between"><span class="text-[10px] mono" style="color:var(--text-muted)">${h.key}</span><span class="text-[10px]" style="color:var(--text-muted)">${h.latency?h.latency+'ms':''} • ${h.code}</span></div><div class="text-[9px] mt-1" style="color:var(--text-muted)">${h.time}</div>`;
+            d.addEventListener('click',()=>{if(h.providerId)selectProvider(h.providerId);});
+            d.style.cursor='pointer';
+            list.appendChild(d);
+        });
+    }
+
+    function toggleHistory(){
+        const p=document.getElementById('historyPanel');const o=document.getElementById('historyOverlay');
+        const isOpen=p.classList.contains('open');
+        p.classList.toggle('open',!isOpen);o.classList.toggle('active',!isOpen);
+        document.body.style.overflow=isOpen?'':'hidden';
+    }
+
+    function clearHistory(){
+        testHistory=[];stats={total:0,valid:0,invalid:0,latencies:[]};
+        localStorage.setItem('mdhHistory','[]');localStorage.setItem('mdhStats',JSON.stringify(stats));
+        renderHistory();updateStats();showToast('🗑️','History cleared');
+    }
+
+    function exportHistory(format){
+        if(!testHistory.length){showToast('⚠️','No history');return;}
+        let content,filename,type;
+        if(format==='csv'){
+            content='Provider,Key,Status,Code,Latency,Time\n'+testHistory.map(h=>`"${h.provider}","${h.key}","${h.status}","${h.code}","${h.latency}","${h.time}"`).join('\n');
+            filename='mdh-tester-history.csv';type='text/csv';
+        }else if(format==='json'){
+            content=JSON.stringify(testHistory,null,2);filename='mdh-tester-history.json';type='application/json';
+        }else if(format==='postman'){
+            const items=testHistory.map(h=>{const p=API_PROVIDERS.find(x=>x.name===h.provider);return{name:`${h.provider} (${h.status})`,request:{method:'GET',header:[{key:'Authorization',value:'Bearer {{api_key}}'}],url:{raw:p?'https://api.example.com':'https://api.example.com'}}};});
+            const collection={info:{name:'MDH TESTER History',schema:'https://schema.getpostman.com/json/collection/v2.1.0/collection.json'},item:items,variable:[{key:'api_key',value:''}]};
+            content=JSON.stringify(collection,null,2);filename='mdh-tester-postman.json';type='application/json';
+        }
+        const blob=new Blob([content],{type});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();
+        showToast('💾',`Exported as ${format.toUpperCase()}`);
+    }
+
+    function updateStats(){
+        animateNum('totalTests',stats.total);animateNum('validCount',stats.valid);animateNum('invalidCount',stats.invalid);
+        const avg=stats.latencies?.length?Math.round(stats.latencies.reduce((a,b)=>a+b,0)/stats.latencies.length):0;
+        animateNum('avgLatency',avg);
+    }
+
+    function animateNum(id,target){
+        const el=document.getElementById(id);const cur=parseInt(el.textContent)||0;if(cur===target)return;
+        const diff=target-cur;const steps=Math.min(Math.abs(diff),20);const sv=diff/steps;let s=0;
+        const t=setInterval(()=>{s++;el.textContent=Math.round(cur+sv*s);if(s>=steps){el.textContent=target;clearInterval(t);}},30);
+    }
+
+    // ============================== MODALS ==============================
+    function openModal(id){document.getElementById(id).classList.add('active');}
+    function closeModal(id){document.getElementById(id).classList.remove('active');}
+    function closeAllModals(){['shareModal','scannerModal'].forEach(id=>closeModal(id));}
+
+    // ============================== SHARE ==============================
+    function copyShareLink(){
+        navigator.clipboard.writeText(SITE_URL).then(()=>{
+            const btn=document.getElementById('copyLinkBtn');btn.textContent='Copied!';
+            setTimeout(()=>{btn.textContent='Copy';},2000);showToast('✅','Link copied!');
+        });
+    }
+    function shareVia(platform){
+        const text=encodeURIComponent(SITE_DESC);const url=encodeURIComponent(SITE_URL);const title=encodeURIComponent(SITE_NAME);
+        const urls={twitter:`https://twitter.com/intent/tweet?text=${text}&url=${url}`,telegram:`https://t.me/share/url?url=${url}&text=${text}`,whatsapp:`https://wa.me/?text=${text}%20${url}`,linkedin:`https://www.linkedin.com/sharing/share-offsite/?url=${url}`,reddit:`https://www.reddit.com/submit?url=${decodeURIComponent(url)}&title=${title}`,email:`mailto:?subject=${title}&body=${text}%20${url}`};
+        if(urls[platform])window.open(urls[platform],'_blank','width=600,height=500');closeModal('shareModal');
+    }
+
+    // ============================== TOAST ==============================
+    let toastTimer;
+    function showToast(icon,msg){
+        const t=document.getElementById('toast');document.getElementById('toastIcon').textContent=icon;document.getElementById('toastMsg').textContent=msg;
+        t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+    }
+
+    // ============================== START ==============================
+    init();
+    </script>
+</body>
+</html>
