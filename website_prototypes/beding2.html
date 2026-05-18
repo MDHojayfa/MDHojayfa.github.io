@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BidZone | Premium Auction House</title>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== BASE & SCROLLBAR ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #0a0a1a; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #00f0ff, #8b5cf6); border-radius: 10px; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #050510;
+  color: #e0e0ff;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ===== ANIMATED GRID BACKGROUND ===== */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridMove 20s linear infinite;
+}
+@keyframes gridMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+
+/* ===== FLOATING PARTICLES ===== */
+.particles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  animation: particleFloat linear infinite;
+  opacity: 0;
+}
+@keyframes particleFloat {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+}
+
+/* ===== NEON GLOW EFFECTS ===== */
+.neon-text {
+  text-shadow: 0 0 7px #00f0ff, 0 0 10px #00f0ff, 0 0 21px #00f0ff, 0 0 42px #0fa0ff, 0 0 82px #0fa0ff;
+}
+.neon-text-pink {
+  text-shadow: 0 0 7px #ff00ff, 0 0 10px #ff00ff, 0 0 21px #ff00ff, 0 0 42px #ff00de, 0 0 82px #ff00de;
+}
+.neon-text-gold {
+  text-shadow: 0 0 7px #ffd700, 0 0 10px #ffd700, 0 0 21px #ffd700, 0 0 42px #ffaa00;
+}
+.neon-border {
+  box-shadow: 0 0 5px #00f0ff, 0 0 10px rgba(0,240,255,0.3), inset 0 0 5px rgba(0,240,255,0.1);
+  border: 1px solid rgba(0,240,255,0.4);
+}
+.neon-border-pink {
+  box-shadow: 0 0 5px #ff00ff, 0 0 10px rgba(255,0,255,0.3), inset 0 0 5px rgba(255,0,255,0.1);
+  border: 1px solid rgba(255,0,255,0.4);
+}
+
+/* ===== GLASSMORPHISM ===== */
+.glass {
+  background: rgba(10, 10, 40, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.glass-light {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ===== WELCOME MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.5s ease;
+}
+.modal-content {
+  max-width: 520px;
+  width: 90%;
+  border-radius: 24px;
+  overflow: hidden;
+  animation: modalPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+.modal-content::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: conic-gradient(from 0deg, #00f0ff, #8b5cf6, #ff00ff, #ffd700, #00f0ff);
+  border-radius: 26px;
+  z-index: -1;
+  animation: borderSpin 4s linear infinite;
+}
+@keyframes borderSpin {
+  to { transform: rotate(360deg); }
+}
+@keyframes modalPop {
+  0% { transform: scale(0.5) rotateX(20deg); opacity: 0; }
+  100% { transform: scale(1) rotateX(0); opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ===== PRODUCT CARDS ===== */
+.product-card {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+}
+.product-card:hover {
+  transform: translateY(-10px) scale(1.02);
+}
+.product-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 2px;
+  background: linear-gradient(135deg, rgba(0,240,255,0.5), rgba(139,92,246,0.5), rgba(255,0,255,0.5));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.product-card:hover::before { opacity: 1; }
+.product-card .card-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0,240,255,0.08) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+}
+.product-card:hover .card-glow { opacity: 1; }
+
+/* ===== TIMER ===== */
+.timer-ring {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.timer-ring svg {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  transform: rotate(-90deg);
+}
+.timer-ring circle {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.timer-ring .bg { stroke: rgba(255,255,255,0.05); }
+.timer-ring .progress {
+  stroke: url(#timerGradient);
+  stroke-dasharray: 339.292;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1s linear;
+}
+
+/* ===== BID BUTTONS ===== */
+.bid-shortcut {
+  position: relative;
+  padding: 10px 24px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: linear-gradient(135deg, rgba(0,240,255,0.1), rgba(139,92,246,0.1));
+  color: #00f0ff;
+}
+.bid-shortcut:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(0,240,255,0.3);
+  border-color: rgba(0,240,255,0.5);
+}
+.bid-shortcut::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+.bid-shortcut:hover::after { transform: translateX(100%); }
+
+.bid-btn-main {
+  background: linear-gradient(135deg, #00f0ff, #8b5cf6);
+  color: #000;
+  font-weight: 800;
+  font-size: 1.2rem;
+  padding: 16px 48px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.bid-btn-main:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(0,240,255,0.5), 0 0 60px rgba(139,92,246,0.3);
+}
+.bid-btn-main:active { transform: scale(0.98); }
+
+/* ===== BID HISTORY ===== */
+.bid-entry {
+  animation: slideInBid 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes slideInBid {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* ===== PULSE ANIMATION ===== */
+@keyframes pulse-neon {
+  0%, 100% { box-shadow: 0 0 5px #00f0ff, 0 0 10px rgba(0,240,255,0.3); }
+  50% { box-shadow: 0 0 15px #00f0ff, 0 0 30px rgba(0,240,255,0.5), 0 0 45px rgba(0,240,255,0.2); }
+}
+.pulse-neon { animation: pulse-neon 2s infinite; }
+
+/* ===== LIVE DOT ===== */
+.live-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ff3b3b;
+  display: inline-block;
+  animation: livePulse 1.5s infinite;
+}
+@keyframes livePulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255,59,59,0.7); }
+  50% { opacity: 0.7; box-shadow: 0 0 0 8px rgba(255,59,59,0); }
+}
+
+/* ===== SHIMMER ===== */
+.shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ===== AURORA ===== */
+.aurora {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(0,240,255,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(139,92,246,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(255,0,255,0.04) 0%, transparent 50%);
+  animation: auroraMove 15s ease-in-out infinite alternate;
+}
+@keyframes auroraMove {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(-5%, 3%) rotate(3deg); }
+}
+
+/* ===== TOAST ===== */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.toast {
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  animation: toastIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), toastOut 0.4s 3s forwards;
+  max-width: 360px;
+}
+@keyframes toastIn {
+  from { transform: translateX(100%) scale(0.8); opacity: 0; }
+  to { transform: translateX(0) scale(1); opacity: 1; }
+}
+@keyframes toastOut {
+  to { transform: translateX(120%); opacity: 0; }
+}
+
+/* ===== CONFETTI ===== */
+.confetti-piece {
+  position: fixed;
+  z-index: 10001;
+  width: 10px;
+  height: 10px;
+  animation: confettiFall 3s ease-in forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* ===== PRODUCT DETAIL VIEW ===== */
+.detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(5,5,16,0.95);
+  backdrop-filter: blur(20px);
+  overflow-y: auto;
+  animation: fadeIn 0.4s ease;
+}
+.detail-content {
+  animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes slideUp {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ===== NAV ===== */
+nav.main-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  transition: all 0.3s;
+}
+nav.main-nav.scrolled {
+  background: rgba(5,5,16,0.9);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ===== CATEGORY PILLS ===== */
+.cat-pill {
+  padding: 8px 20px;
+  border-radius: 100px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  white-space: nowrap;
+}
+.cat-pill:hover, .cat-pill.active {
+  background: linear-gradient(135deg, rgba(0,240,255,0.15), rgba(139,92,246,0.15));
+  border-color: rgba(0,240,255,0.4);
+  color: #00f0ff;
+  box-shadow: 0 0 15px rgba(0,240,255,0.15);
+}
+
+/* ===== IMAGE SHINE ===== */
+.img-shine {
+  position: relative;
+  overflow: hidden;
+}
+.img-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.08) 50%, transparent 60%);
+  transform: translateX(-100%);
+  transition: transform 0.8s;
+}
+.img-shine:hover::after {
+  transform: translateX(100%);
+}
+
+/* ===== STATS COUNTER ===== */
+.stat-num {
+  font-family: 'Orbitron', monospace;
+  background: linear-gradient(135deg, #00f0ff, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .product-grid { grid-template-columns: 1fr !important; }
+  .detail-flex { flex-direction: column !important; }
+  .timer-ring { width: 90px; height: 90px; }
+  .timer-ring svg { width: 90px; height: 90px; }
+  .bid-btn-main { padding: 14px 32px; font-size: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== BACKGROUND LAYERS ===== -->
+<div class="grid-bg"></div>
+<div class="aurora"></div>
+<div class="particles" id="particles"></div>
+
+<!-- ===== TOAST CONTAINER ===== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ===== WELCOME MODAL ===== -->
+<div class="modal-overlay" id="welcomeModal">
+  <div class="modal-content">
+    <div class="glass" style="border-radius: 24px; padding: 0;">
+      <!-- Top gradient bar -->
+      <div style="height: 6px; background: linear-gradient(90deg, #00f0ff, #8b5cf6, #ff00ff, #ffd700);"></div>
+      
+      <div style="padding: 40px 32px; text-align: center;">
+        <!-- Logo -->
+        <div style="margin-bottom: 24px;">
+          <div style="width: 80px; height: 80px; margin: 0 auto; border-radius: 20px; background: linear-gradient(135deg, #00f0ff, #8b5cf6); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', monospace; font-size: 2rem; font-weight: 900; color: #000;">
+            BZ
+          </div>
+        </div>
+        
+        <!-- Title -->
+        <h1 style="font-family: 'Orbitron', monospace; font-size: 1.8rem; font-weight: 900; margin-bottom: 8px;">
+          <span style="background: linear-gradient(135deg, #00f0ff, #8b5cf6, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">BidZone</span>
+        </h1>
+        <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 24px;">Premium Auction House</p>
+        
+        <!-- Divider -->
+        <div style="height: 1px; background: linear-gradient(90deg, transparent, rgba(0,240,255,0.3), transparent); margin: 20px 0;"></div>
+        
+        <!-- Creator info -->
+        <div style="margin-bottom: 24px;">
+          <p style="color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 8px;">Crafted with 💜 by</p>
+          <p style="font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 700; color: #00f0ff;" class="neon-text">MDHojayfa</p>
+        </div>
+        
+        <!-- Contact -->
+        <div style="background: rgba(0,240,255,0.05); border: 1px solid rgba(0,240,255,0.15); border-radius: 16px; padding: 16px; margin-bottom: 28px;">
+          <p style="color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-bottom: 6px;">For More Info & Contact</p>
+          <a href="https://t.me/MDHojayfa_bot" target="_blank" style="color: #00f0ff; text-decoration: none; font-weight: 700; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 8px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+            @MDHojayfa_bot
+          </a>
+        </div>
+        
+        <!-- Enter Button -->
+        <button onclick="closeWelcome()" style="width: 100%; padding: 16px; border-radius: 14px; border: none; background: linear-gradient(135deg, #00f0ff, #8b5cf6); color: #000; font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 3px; font-family: 'Orbitron', monospace;" onmouseover="this.style.transform='scale(1.03)'; this.style.boxShadow='0 0 30px rgba(0,240,255,0.5)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+          Enter Auction
+        </button>
+        
+        <p style="color: rgba(255,255,255,0.3); font-size: 0.7rem; margin-top: 16px;">By entering you agree to our terms of service</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NAVIGATION ===== -->
+<nav class="main-nav" id="mainNav">
+  <div style="max-width: 1400px; margin: 0 auto; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #00f0ff, #8b5cf6); display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', monospace; font-weight: 900; color: #000; font-size: 0.9rem;">
+        BZ
+      </div>
+      <span style="font-family: 'Orbitron', monospace; font-weight: 700; font-size: 1.1rem; background: linear-gradient(135deg, #00f0ff, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        BidZone
+      </span>
+    </div>
+    
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span class="live-dot"></span>
+        <span style="font-size: 0.8rem; color: #ff3b3b; font-weight: 600;">LIVE</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.5);">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-11.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 9c0 .088.002.175.005.26C3.06 10.77 3.5 12.138 3.5 13H12.5c0-.862.44-2.23.495-3.74.003-.085.005-.172.005-.26a5.002 5.002 0 0 0-4.995-4.9z"/></svg>
+        <span id="navBidCount" style="font-weight: 600; font-size: 0.85rem;">0 bids</span>
+      </div>
+      <a href="https://t.me/MDHojayfa_bot" target="_blank" style="display: flex; align-items: center; gap: 6px; color: #00f0ff; text-decoration: none; font-weight: 600; font-size: 0.85rem; padding: 8px 16px; border-radius: 10px; border: 1px solid rgba(0,240,255,0.2); transition: all 0.3s;" onmouseover="this.style.background='rgba(0,240,255,0.1)'" onmouseout="this.style.background='transparent'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        Contact
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main id="mainContent" style="position: relative; z-index: 1; opacity: 0; transition: opacity 0.6s; padding-top: 80px;">
+  
+  <!-- HERO SECTION -->
+  <section style="max-width: 1400px; margin: 0 auto; padding: 60px 24px 40px;">
+    <div style="text-align: center; margin-bottom: 48px;">
+      <h1 style="font-family: 'Orbitron', monospace; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 12px; line-height: 1.2;">
+        <span style="background: linear-gradient(135deg, #00f0ff, #8b5cf6, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Discover. Bid. Win.</span>
+      </h1>
+      <p style="color: rgba(255,255,255,0.4); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+        Premium auctions on exclusive items. Place your bid before time runs out.
+      </p>
+    </div>
+    
+    <!-- STATS BAR -->
+    <div style="display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; margin-bottom: 48px;">
+      <div style="text-align: center;">
+        <div class="stat-num" style="font-size: 1.8rem; font-weight: 900;">8</div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Live Auctions</div>
+      </div>
+      <div style="text-align: center;">
+        <div class="stat-num" style="font-size: 1.8rem; font-weight: 900;" id="totalBids">0</div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Total Bids</div>
+      </div>
+      <div style="text-align: center;">
+        <div class="stat-num" style="font-size: 1.8rem; font-weight: 900;">$24.5K</div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Total Value</div>
+      </div>
+      <div style="text-align: center;">
+        <div class="stat-num" style="font-size: 1.8rem; font-weight: 900;">1.2K</div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;">Bidders</div>
+      </div>
+    </div>
+    
+    <!-- CATEGORY PILLS -->
+    <div style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; justify-content: center; flex-wrap: wrap;" id="categoryPills">
+      <div class="cat-pill active" onclick="filterCategory('all')">🔥 All</div>
+      <div class="cat-pill" onclick="filterCategory('watches')">⌚ Watches</div>
+      <div class="cat-pill" onclick="filterCategory('tech')">💻 Tech</div>
+      <div class="cat-pill" onclick="filterCategory('sneakers')">👟 Sneakers</div>
+      <div class="cat-pill" onclick="filterCategory('gaming')">🎮 Gaming</div>
+      <div class="cat-pill" onclick="filterCategory('collectibles')">💎 Collectibles</div>
+    </div>
+  </section>
+  
+  <!-- PRODUCT GRID -->
+  <section style="max-width: 1400px; margin: 0 auto; padding: 0 24px 80px;">
+    <div class="product-grid" id="productGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px;">
+      <!-- Products injected by JS -->
+    </div>
+  </section>
+  
+  <!-- FOOTER -->
+  <footer style="border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 24px; text-align: center;">
+    <div style="max-width: 1400px; margin: 0 auto;">
+      <div style="font-family: 'Orbitron', monospace; font-weight: 700; font-size: 1rem; background: linear-gradient(135deg, #00f0ff, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 12px;">
+        BidZone
+      </div>
+      <p style="color: rgba(255,255,255,0.3); font-size: 0.8rem; margin-bottom: 8px;">
+        Made with 💜 by <span style="color: #00f0ff; font-weight: 600;">MDHojayfa</span>
+      </p>
+      <a href="https://t.me/MDHojayfa_bot" target="_blank" style="color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.8rem; transition: color 0.3s;" onmouseover="this.style.color='#00f0ff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">
+        📱 @MDHojayfa_bot
+      </a>
+    </div>
+  </footer>
+</main>
+
+<!-- ===== PRODUCT DETAIL (Hidden by default) ===== -->
+<div class="detail-overlay" id="productDetail" style="display: none;">
+</div>
+
+<!-- ===== SVG DEFS ===== -->
+<svg width="0" height="0">
+  <defs>
+    <linearGradient id="timerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00f0ff"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<script>
+// ===== PRODUCTS DATA =====
+const products = [
+  {
+    id: 1,
+    name: "Rolex Submariner Date",
+    category: "watches",
+    image: "https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=600&h=400&fit=crop",
+    description: "The iconic Rolex Submariner Date in Oystersteel with a black dial. A true masterpiece of horology featuring the Calibre 3235 movement, 41mm case, and 300m water resistance. This legendary timepiece is the benchmark for divers' watches.",
+    basePrice: 8500,
+    currentBid: 8500,
+    timer: 120,
+    timerLeft: 120,
+    bids: [],
+    badge: "🔥 HOT",
+    condition: "New with tags"
+  },
+  {
+    id: 2,
+    name: "MacBook Pro M3 Max",
+    category: "tech",
+    image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&h=400&fit=crop",
+    description: "Apple MacBook Pro 16-inch with the revolutionary M3 Max chip. Featuring 36GB unified memory, 1TB SSD, Liquid Retina XDR display, and up to 22 hours of battery life. The ultimate creative powerhouse.",
+    basePrice: 3499,
+    currentBid: 3499,
+    timer: 90,
+    timerLeft: 90,
+    bids: [],
+    badge: "⭐ FEATURED",
+    condition: "Brand New"
+  },
+  {
+    id: 3,
+    name: "Nike Air Jordan 1 Retro High OG",
+    category: "sneakers",
+    image: "https://images.unsplash.com/photo-1600269452121-4f2416e55c28?w=600&h=400&fit=crop",
+    description: "The legendary Air Jordan 1 Retro High OG 'Chicago' colorway. One of the most sought-after sneakers in history. Premium leather construction, original branding, and the silhouette that started it all. Size 10 US.",
+    basePrice: 1200,
+    currentBid: 1200,
+    timer: 150,
+    timerLeft: 150,
+    bids: [],
+    badge: "👑 RARE",
+    condition: "Deadstock"
+  },
+  {
+    id: 4,
+    name: "PS5 Pro Bundle",
+    category: "gaming",
+    image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=600&h=400&fit=crop",
+    description: "PlayStation 5 Pro console bundle including DualSense Edge controller, 2TB SSD, vertical stand, and three launch titles. Experience gaming in 4K at 60fps with ray tracing. Includes 3-month PS Plus Premium subscription.",
+    basePrice: 799,
+    currentBid: 799,
+    timer: 100,
+    timerLeft: 100,
+    bids: [],
+    badge: "🎮 GAMING",
+    condition: "Sealed"
+  },
+  {
+    id: 5,
+    name: "DJI Mavic 3 Pro",
+    category: "tech",
+    image: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=600&h=400&fit=crop",
+    description: "DJI Mavic 3 Pro with Hasselblad camera and triple-camera system. 4/3 CMOS sensor, 43-minute flight time, omnidirectional obstacle sensing, and 15km max transmission range. Includes Fly More Combo with extra batteries.",
+    basePrice: 2200,
+    currentBid: 2200,
+    timer: 110,
+    timerLeft: 110,
+    bids: [],
+    badge: "📸 PREMIUM",
+    condition: "Like New"
+  },
+  {
+    id: 6,
+    name: "Apple iPhone 15 Pro Max",
+    category: "tech",
+    image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&h=400&fit=crop",
+    description: "iPhone 15 Pro Max in Natural Titanium. 256GB storage, A17 Pro chip, 48MP camera system with 5x optical zoom, titanium design, and USB-C. The most powerful iPhone ever created. Unlocked, factory sealed.",
+    basePrice: 1199,
+    currentBid: 1199,
+    timer: 80,
+    timerLeft: 80,
+    bids: [],
+    badge: "📱 TRENDING",
+    condition: "Factory Sealed"
+  },
+  {
+    id: 7,
+    name: "CryptoPunk #7804",
+    category: "collectibles",
+    image: "https://images.unsplash.com/photo-1635322966219-b75ed372eb01?w=600&h=400&fit=crop",
+    description: "One of the most iconic NFT collectibles. This rare alien CryptoPunk features a small cap, and is one of only 9 alien punks in existence. A piece of digital art history that represents the dawn of the NFT era.",
+    basePrice: 5000,
+    currentBid: 5000,
+    timer: 180,
+    timerLeft: 180,
+    bids: [],
+    badge: "💎 ULTRA RARE",
+    condition: "Digital Asset"
+  },
+  {
+    id: 8,
+    name: "Meta Quest 3 Elite",
+    category: "gaming",
+    image: "https://images.unsplash.com/photo-1617802690992-15d93263d3a9?w=600&h=400&fit=crop",
+    description: "Meta Quest 3 512GB with Elite Strap and carrying case. Mixed reality headset with breakthrough color passthrough, Qualcomm Snapdragon XR2 Gen 2, and the largest library of VR/MR content. Includes 6-month Meta Quest+ subscription.",
+    basePrice: 649,
+    currentBid: 649,
+    timer: 95,
+    timerLeft: 95,
+    bids: [],
+    badge: "🥽 VR",
+    condition: "Brand New"
+  }
+];
+
+let totalBidCount = 0;
+let activeTimers = {};
+let currentFilter = 'all';
+
+// ===== FAKE BIDDERS =====
+const fakeBidders = [
+  "CryptoKing99", "BidMaster_X", "LuxeHunter", "SneakerHead_Pro",
+  "TechWiz2024", "DiamondHands", "AuctionQueen", "VIPBidder",
+  "NightOwl_Bids", "TheCollector", "GoldenBid", "SilentAuctioneer"
+];
+
+// ===== INITIALIZE =====
+document.addEventListener('DOMContentLoaded', () => {
+  createParticles();
+  renderProducts();
+  startAllTimers();
+});
+
+// ===== PARTICLES =====
+function createParticles() {
+  const container = document.getElementById('particles');
+  const colors = ['#00f0ff', '#8b5cf6', '#ff00ff', '#ffd700', '#00ff88'];
+  for (let i = 0; i < 50; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+    p.style.animationDelay = (Math.random() * 15) + 's';
+    p.style.width = (Math.random() * 3 + 1) + 'px';
+    p.style.height = p.style.width;
+    container.appendChild(p);
+  }
+}
+
+// ===== CLOSE WELCOME =====
+function closeWelcome() {
+  const modal = document.getElementById('welcomeModal');
+  modal.style.animation = 'fadeIn 0.3s reverse forwards';
+  setTimeout(() => {
+    modal.style.display = 'none';
+    document.getElementById('mainContent').style.opacity = '1';
+  }, 300);
+}
+
+// ===== NAV SCROLL =====
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('mainNav');
+  if (window.scrollY > 50) {
+    nav.classList.add('scrolled');
+  } else {
+    nav.classList.remove('scrolled');
+  }
+});
+
+// ===== RENDER PRODUCTS =====
+function renderProducts() {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+  
+  const filtered = currentFilter === 'all' 
+    ? products 
+    : products.filter(p => p.category === currentFilter);
+  
+  filtered.forEach((product, index) => {
+    const card = document.createElement('div');
+    card.className = 'product-card glass';
+    card.style.animationDelay = (index * 0.1) + 's';
+    card.onclick = () => openProduct(product.id);
+    
+    const timeLeft = product.timerLeft;
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    const timeStr = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    
+    const bidCount = product.bids.length;
+    const isUrgent = timeLeft < 30;
+    
+    card.innerHTML = `
+      <div class="card-glow"></div>
+      <div class="img-shine" style="height: 220px; overflow: hidden; position: relative;">
+        <img src="${product.image}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" loading="lazy">
+        <div style="position: absolute; top: 12px; left: 12px; padding: 4px 12px; border-radius: 8px; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); font-size: 0.75rem; font-weight: 600;">
+          ${product.badge}
+        </div>
+        <div style="position: absolute; top: 12px; right: 12px; display: flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 8px; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);">
+          <span class="live-dot" style="width: 6px; height: 6px;"></span>
+          <span style="font-size: 0.7rem; font-weight: 600; color: ${isUrgent ? '#ff3b3b' : '#00f0ff'};">${timeStr}</span>
+        </div>
+        <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 60px; background: linear-gradient(transparent, rgba(5,5,16,0.9));"></div>
+      </div>
+      <div style="padding: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+          <h3 style="font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.15rem; line-height: 1.3; flex: 1;">${product.name}</h3>
+        </div>
+        <p style="color: rgba(255,255,255,0.3); font-size: 0.8rem; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;">${product.condition}</p>
+        <div style="display: flex; justify-content: space-between; align-items: end;">
+          <div>
+            <p style="color: rgba(255,255,255,0.4); font-size: 0.7rem; margin-bottom: 4px;">Current Bid</p>
+            <p style="font-family: 'Orbitron', monospace; font-weight: 700; font-size: 1.3rem; color: #00f0ff;">$${product.currentBid.toLocaleString()}</p>
+          </div>
+          <div style="text-align: right;">
+            <p style="color: rgba(255,255,255,0.4); font-size: 0.7rem; margin-bottom: 4px;">${bidCount} bids</p>
+            <button style="padding: 8px 20px; border-radius: 10px; border: 1px solid rgba(0,240,255,0.3); background: linear-gradient(135deg, rgba(0,240,255,0.1), rgba(139,92,246,0.1)); color: #00f0ff; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.3s;" onmouseover="this.style.background='linear-gradient(135deg, rgba(0,240,255,0.2), rgba(139,92,246,0.2))'; this.style.boxShadow='0 0 15px rgba(0,240,255,0.3)'" onmouseout="this.style.background='linear-gradient(135deg, rgba(0,240,255,0.1), rgba(139,92,246,0.1))'; this.style.boxShadow='none'">
+              BID NOW
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    grid.appendChild(card);
+  });
+}
+
+// ===== OPEN PRODUCT DETAIL =====
+function openProduct(productId) {
+  const product = products.find(p => p.id === productId);
+  if (!product) return;
+  
+  const detail = document.getElementById('productDetail');
+  detail.style.display = 'block';
+  
+  const circumference = 2 * Math.PI * 54; // radius 54
+  const offset = circumference * (1 - product.timerLeft / product.timer);
+  
+  detail.innerHTML = `
+    <div class="detail-content" style="max-width: 1200px; margin: 0 auto; padding: 24px;">
+      <!-- Back Button -->
+      <button onclick="closeProduct()" style="display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.6); background: none; border: none; cursor: pointer; font-size: 0.95rem; margin-bottom: 24px; padding: 10px 20px; border-radius: 12px; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.08);" onmouseover="this.style.color='#00f0ff'; this.style.borderColor='rgba(0,240,255,0.3)'" onmouseout="this.style.color='rgba(255,255,255,0.6)'; this.style.borderColor='rgba(255,255,255,0.08)'">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to Auctions
+      </button>
+      
+      <div class="detail-flex" style="display: flex; gap: 32px;">
+        <!-- LEFT: Image -->
+        <div style="flex: 1; min-width: 0;">
+          <div class="glass img-shine" style="border-radius: 20px; overflow: hidden; position: relative;">
+            <img src="${product.image}" alt="${product.name}" style="width: 100%; height: 400px; object-fit: cover; display: block;">
+            <div style="position: absolute; top: 16px; left: 16px; padding: 6px 16px; border-radius: 10px; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); font-weight: 700;">
+              ${product.badge}
+            </div>
+          </div>
+          
+          <!-- Description -->
+          <div class="glass" style="border-radius: 16px; padding: 24px; margin-top: 20px;">
+            <h3 style="font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 12px; color: rgba(255,255,255,0.8);">Description</h3>
+            <p style="color: rgba(255,255,255,0.5); line-height: 1.7; font-size: 0.9rem;">${product.description}</p>
+            <div style="display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap;">
+              <span style="padding: 4px 12px; border-radius: 8px; background: rgba(0,240,255,0.08); border: 1px solid rgba(0,240,255,0.15); font-size: 0.8rem; color: #00f0ff;">${product.condition}</span>
+              <span style="padding: 4px 12px; border-radius: 8px; background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.15); font-size: 0.8rem; color: #8b5cf6;">Verified Seller</span>
+              <span style="padding: 4px 12px; border-radius: 8px; background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.15); font-size: 0.8rem; color: #ffd700;">Free Shipping</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- RIGHT: Bidding Panel -->
+        <div style="flex: 1; min-width: 0;">
+          <!-- Title & Badge -->
+          <div style="margin-bottom: 20px;">
+            <p style="color: rgba(255,255,255,0.4); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">${product.category}</p>
+            <h2 style="font-family: 'Orbitron', monospace; font-size: 1.6rem; font-weight: 900; line-height: 1.3; margin-bottom: 8px;">${product.name}</h2>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="live-dot"></span>
+              <span style="color: #ff3b3b; font-weight: 600; font-size: 0.85rem;">LIVE AUCTION</span>
+            </div>
+          </div>
+          
+          <!-- Timer & Current Bid -->
+          <div class="glass neon-border pulse-neon" style="border-radius: 20px; padding: 28px; text-align: center; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+              <div class="timer-ring">
+                <svg viewBox="0 0 120 120">
+                  <circle class="bg" cx="60" cy="60" r="54"/>
+                  <circle class="progress" cx="60" cy="60" r="54" id="timerCircle-${product.id}" style="stroke-dasharray: ${circumference}; stroke-dashoffset: ${offset};"/>
+                </svg>
+                <div style="text-align: center; z-index: 1;">
+                  <div id="timerDisplay-${product.id}" style="font-family: 'Orbitron', monospace; font-size: 1.5rem; font-weight: 900; color: #00f0ff;">${formatTime(product.timerLeft)}</div>
+                  <div style="font-size: 0.65rem; color: rgba(255,255,255,0.4); text-transform: uppercase;">remaining</div>
+                </div>
+              </div>
+            </div>
+            
+            <p style="color: rgba(255,255,255,0.4); font-size: 0.8rem; margin-bottom: 4px;">Current Highest Bid</p>
+            <p id="currentBidDisplay-${product.id}" style="font-family: 'Orbitron', monospace; font-size: 2.2rem; font-weight: 900; background: linear-gradient(135deg, #00f0ff, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">$${product.currentBid.toLocaleString()}</p>
+            <p style="color: rgba(255,255,255,0.3); font-size: 0.75rem; margin-top: 4px;">Starting at $${product.basePrice.toLocaleString()}</p>
+          </div>
+          
+          <!-- Bid Input -->
+          <div class="glass" style="border-radius: 16px; padding: 24px; margin-bottom: 20px;">
+            <p style="font-weight: 600; margin-bottom: 12px; font-size: 0.9rem;">Place Your Bid</p>
+            
+            <!-- Shortcuts -->
+            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;">
+              <button class="bid-shortcut" onclick="quickBid(${product.id}, 10)">+$10</button>
+              <button class="bid-shortcut" onclick="quickBid(${product.id}, 20)">+$20</button>
+              <button class="bid-shortcut" onclick="quickBid(${product.id}, 50)">+$50</button>
+              <button class="bid-shortcut" onclick="quickBid(${product.id}, 100)">+$100</button>
+              <button class="bid-shortcut" onclick="quickBid(${product.id}, 250)">+$250</button>
+              <button class="bid-shortcut" onclick="quickBid(${product.id}, 500)">+$500</button>
+            </div>
+            
+            <!-- Custom bid -->
+            <div style="display: flex; gap: 10px; margin-bottom: 16px;">
+              <div style="flex: 1; position: relative;">
+                <span style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.4); font-weight: 700;">$</span>
+                <input type="number" id="bidInput-${product.id}" placeholder="Custom amount" min="${product.currentBid + 1}" style="width: 100%; padding: 14px 14px 14px 30px; border-radius: 12px; border: 1px solid rgba(0,240,255,0.2); background: rgba(0,0,0,0.3); color: #fff; font-size: 1rem; font-weight: 600; outline: none; transition: all 0.3s; font-family: 'Orbitron', monospace;" onfocus="this.style.borderColor='rgba(0,240,255,0.5)'; this.style.boxShadow='0 0 15px rgba(0,240,255,0.15)'" onblur="this.style.borderColor='rgba(0,240,255,0.2)'; this.style.boxShadow='none'">
+              </div>
+            </div>
+            
+            <button class="bid-btn-main" style="width: 100%;" onclick="placeBid(${product.id})">
+              🔨 PLACE BID
+            </button>
+            
+            <p style="color: rgba(255,255,255,0.25); font-size: 0.7rem; text-align: center; margin-top: 10px;">Minimum bid: $${(product.currentBid + 1).toLocaleString()}</p>
+          </div>
+          
+          <!-- Bid History -->
+          <div class="glass" style="border-radius: 16px; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <p style="font-weight: 700; font-size: 0.9rem;">📜 Bid History</p>
+              <span style="color: rgba(255,255,255,0.3); font-size: 0.8rem;" id="bidCount-${product.id}">${product.bids.length} bids</span>
+            </div>
+            <div id="bidHistory-${product.id}" style="max-height: 240px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+              ${product.bids.length === 0 
+                ? '<p style="color: rgba(255,255,255,0.25); font-size: 0.85rem; text-align: center; padding: 20px;">No bids yet. Be the first! 🚀</p>'
+                : product.bids.map((bid, i) => renderBidEntry(bid, i === 0)).reverse().join('')
+              }
+            </div>
+          </div>
+          
+          <!-- Contact Info -->
+          <div style="margin-top: 20px; text-align: center; padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02);">
+            <p style="color: rgba(255,255,255,0.3); font-size: 0.75rem;">Questions about this auction?</p>
+            <a href="https://t.me/MDHojayfa_bot" target="_blank" style="color: #00f0ff; text-decoration: none; font-weight: 600; font-size: 0.85rem;">Contact @MDHojayfa_bot →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  detail.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function renderBidEntry(bid, isHighest) {
+  return `
+    <div class="bid-entry" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-radius: 10px; background: ${isHighest ? 'rgba(0,240,255,0.06)' : 'rgba(255,255,255,0.02)'}; border: 1px solid ${isHighest ? 'rgba(0,240,255,0.15)' : 'rgba(255,255,255,0.04)'};">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, ${isHighest ? '#00f0ff, #8b5cf6' : '#333, #555'}); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: ${isHighest ? '#000' : '#aaa'};">
+          ${bid.bidder.charAt(0)}${bid.bidder.charAt(1)}
+        </div>
+        <div>
+          <p style="font-weight: 600; font-size: 0.85rem; color: ${isHighest ? '#00f0ff' : 'rgba(255,255,255,0.7)'};">${bid.bidder} ${isHighest ? '🏆' : ''}</p>
+          <p style="font-size: 0.7rem; color: rgba(255,255,255,0.3);">${bid.time}</p>
+        </div>
+      </div>
+      <p style="font-family: 'Orbitron', monospace; font-weight: 700; font-size: 0.9rem; color: ${isHighest ? '#00f0ff' : 'rgba(255,255,255,0.5)'};">$${bid.amount.toLocaleString()}</p>
+    </div>
+  `;
+}
+
+function closeProduct() {
+  document.getElementById('productDetail').style.display = 'none';
+  document.body.style.overflow = '';
+  renderProducts();
+}
+
+// ===== QUICK BID =====
+function quickBid(productId, amount) {
+  const product = products.find(p => p.id === productId);
+  if (!product) return;
+  
+  const newBid = product.currentBid + amount;
+  const input = document.getElementById(`bidInput-${productId}`);
+  if (input) input.value = newBid;
+  
+  placeBid(productId, newBid);
+}
+
+// ===== PLACE BID =====
+function placeBid(productId, customAmount) {
+  const product = products.find(p => p.id === productId);
+  if (!product) return;
+  
+  let bidAmount;
+  if (customAmount) {
+    bidAmount = customAmount;
+  } else {
+    const input = document.getElementById(`bidInput-${productId}`);
+    bidAmount = parseInt(input.value);
+  }
+  
+  if (!bidAmount || isNaN(bidAmount)) {
+    showToast('❌ Please enter a valid bid amount!', 'error');
+    return;
+  }
+  
+  if (bidAmount <= product.currentBid) {
+    showToast(`❌ Bid must be higher than $${product.currentBid.toLocaleString()}!`, 'error');
+    return;
+  }
+  
+  // Place the bid
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+  
+  const bidderName = "You";
+  
+  product.bids.push({
+    bidder: bidderName,
+    amount: bidAmount,
+    time: timeStr
+  });
+  
+  product.currentBid = bidAmount;
+  totalBidCount++;
+  
+  // Reset timer
+  product.timerLeft = product.timer;
+  
+  // Update displays
+  updateNavBidCount();
+  updateTotalBids();
+  
+  // Show toast
+  showToast(`🎉 Bid placed! $${bidAmount.toLocaleString()} on ${product.name}`, 'success');
+  
+  // Confetti
+  launchConfetti();
+  
+  // Refresh detail view
+  openProduct(productId);
+  
+  // Simulate competitor bid after a delay
+  setTimeout(() => {
+    simulateCompetitorBid(productId);
+  }, Math.random() * 8000 + 5000);
+}
+
+// ===== SIMULATE COMPETITOR =====
+function simulateCompetitorBid(productId) {
+  const product = products.find(p => p.id === productId);
+  if (!product) return;
+  
+  // Check if detail is still open for this product
+  const detail = document.getElementById('productDetail');
+  if (detail.style.display === 'none') return;
+  
+  const increments = [10, 20, 50, 100, 250];
+  const increment = increments[Math.floor(Math.random() * increments.length)];
+  const newAmount = product.currentBid + increment;
+  const bidder = fakeBidders[Math.floor(Math.random() * fakeBidders.length)];
+  
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+  
+  product.bids.push({
+    bidder: bidder,
+    amount: newAmount,
+    time: timeStr
+  });
+  
+  product.currentBid = newAmount;
+  product.timerLeft = product.timer; // Reset timer
+  totalBidCount++;
+  
+  updateNavBidCount();
+  updateTotalBids();
+  
+  showToast(`⚡ ${bidder} outbid you! Current: $${newAmount.toLocaleString()}`, 'warning');
+  
+  // Refresh if detail is open
+  openProduct(productId);
+}
+
+// ===== TIMERS =====
+function startAllTimers() {
+  setInterval(() => {
+    products.forEach(product => {
+      if (product.timerLeft > 0) {
+        product.timerLeft--;
+      }
+      
+      // Update timer display if open
+      const timerDisplay = document.getElementById(`timerDisplay-${product.id}`);
+      const timerCircle = document.getElementById(`timerCircle-${product.id}`);
+      
+      if (timerDisplay) {
+        timerDisplay.textContent = formatTime(product.timerLeft);
+        
+        if (product.timerLeft < 30) {
+          timerDisplay.style.color = '#ff3b3b';
+        } else {
+          timerDisplay.style.color = '#00f0ff';
+        }
+      }
+      
+      if (timerCircle) {
+        const circumference = 2 * Math.PI * 54;
+        const offset = circumference * (1 - product.timerLeft / product.timer);
+        timerCircle.style.strokeDashoffset = offset;
+      }
+    });
+  }, 1000);
+}
+
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+// ===== FILTER CATEGORY =====
+function filterCategory(cat) {
+  currentFilter = cat;
+  
+  document.querySelectorAll('.cat-pill').forEach(pill => {
+    pill.classList.remove('active');
+  });
+  event.target.classList.add('active');
+  
+  renderProducts();
+}
+
+// ===== TOAST NOTIFICATIONS =====
+function showToast(message, type) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  
+  const colors = {
+    success: 'background: linear-gradient(135deg, rgba(0,255,136,0.15), rgba(0,240,255,0.1)); border: 1px solid rgba(0,255,136,0.3); color: #00ff88;',
+    error: 'background: linear-gradient(135deg, rgba(255,59,59,0.15), rgba(255,0,100,0.1)); border: 1px solid rgba(255,59,59,0.3); color: #ff3b3b;',
+    warning: 'background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,170,0,0.1)); border: 1px solid rgba(255,215,0,0.3); color: #ffd700;',
+    info: 'background: linear-gradient(135deg, rgba(0,240,255,0.15), rgba(139,92,246,0.1)); border: 1px solid rgba(0,240,255,0.3); color: #00f0ff;'
+  };
+  
+  toast.className = 'toast';
+  toast.style.cssText = colors[type] || colors.info;
+  toast.style.backdropFilter = 'blur(20px)';
+  toast.innerHTML = message;
+  
+  container.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.remove();
+  }, 3500);
+}
+
+// ===== CONFETTI =====
+function launchConfetti() {
+  const colors = ['#00f0ff', '#8b5cf6', '#ff00ff', '#ffd700', '#00ff88', '#ff3b3b'];
+  
+  for (let i = 0; i < 40; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti-piece';
+    confetti.style.left = Math.random() * 100 + 'vw';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    confetti.style.width = (Math.random() * 8 + 4) + 'px';
+    confetti.style.height = (Math.random() * 8 + 4) + 'px';
+    document.body.appendChild(confetti);
+    
+    setTimeout(() => confetti.remove(), 4000);
+  }
+}
+
+// ===== UPDATE COUNTERS =====
+function updateNavBidCount() {
+  document.getElementById('navBidCount').textContent = totalBidCount + ' bids';
+}
+function updateTotalBids() {
+  document.getElementById('totalBids').textContent = totalBidCount;
+}
+
+// ===== RANDOM COMPETITOR BIDS (ambient) =====
+setInterval(() => {
+  const randomProduct = products[Math.floor(Math.random() * products.length)];
+  const detail = document.getElementById('productDetail');
+  
+  // Only simulate for products not currently being viewed
+  if (detail.style.display === 'none') {
+    const increments = [10, 20, 50];
+    const increment = increments[Math.floor(Math.random() * increments.length)];
+    const bidder = fakeBidders[Math.floor(Math.random() * fakeBidders.length)];
+    
+    randomProduct.currentBid += increment;
+    randomProduct.timerLeft = randomProduct.timer;
+    totalBidCount++;
+    
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+    randomProduct.bids.push({
+      bidder: bidder,
+      amount: randomProduct.currentBid,
+      time: timeStr
+    });
+    
+    updateNavBidCount();
+    updateTotalBids();
+    renderProducts();
+  }
+}, 12000);
+</script>
+
+</body>
+</html>
