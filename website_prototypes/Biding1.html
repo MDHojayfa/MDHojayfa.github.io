@@ -1,1 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BidVerse — Premium Auction Platform</title>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  /* ===== ROOT VARIABLES ===== */
+  :root {
+    --neon-cyan: #00f0ff;
+    --neon-purple: #b026ff;
+    --neon-pink: #ff2d95;
+    --neon-green: #39ff14;
+    --neon-orange: #ff6600;
+    --neon-gold: #ffd700;
+    --bg-dark: #050510;
+    --bg-card: rgba(15, 15, 35, 0.85);
+    --glass: rgba(255,255,255,0.04);
+  }
 
+  * { margin:0; padding:0; box-sizing:border-box; scrollbar-width:thin; scrollbar-color: var(--neon-cyan) transparent; }
+  body { font-family:'Inter',sans-serif; background:var(--bg-dark); color:#e0e0ff; overflow-x:hidden; }
+
+  /* ===== ANIMATED BACKGROUND ===== */
+  .bg-universe {
+    position:fixed; inset:0; z-index:-2;
+    background: radial-gradient(ellipse at 20% 50%, rgba(80,0,180,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(0,200,255,0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(255,0,120,0.08) 0%, transparent 50%),
+                var(--bg-dark);
+  }
+
+  /* Grid overlay */
+  .grid-overlay {
+    position:fixed; inset:0; z-index:-1;
+    background-image:
+      linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridMove 20s linear infinite;
+  }
+  @keyframes gridMove {
+    0% { transform: perspective(500px) rotateX(0deg); }
+    100% { transform: perspective(500px) rotateX(2deg); }
+  }
+
+  /* Floating particles */
+  .particle {
+    position:fixed; border-radius:50%; pointer-events:none; z-index:-1;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    0% { transform:translateY(100vh) scale(0); opacity:0; }
+    10% { opacity:1; }
+    90% { opacity:1; }
+    100% { transform:translateY(-10vh) scale(1); opacity:0; }
+  }
+
+  /* ===== GLASS MORPHISM ===== */
+  .glass-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+  }
+  .glass-card:hover {
+    border-color: rgba(0,240,255,0.3);
+    box-shadow: 0 0 30px rgba(0,240,255,0.08), inset 0 0 30px rgba(0,240,255,0.03);
+    transform: translateY(-6px) scale(1.01);
+  }
+
+  /* ===== NEON TEXT ===== */
+  .neon-text {
+    font-family:'Orbitron',monospace;
+    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    background-clip:text;
+    filter: drop-shadow(0 0 20px rgba(0,240,255,0.3));
+  }
+
+  .glow-cyan { text-shadow: 0 0 10px var(--neon-cyan), 0 0 40px rgba(0,240,255,0.3); }
+  .glow-pink { text-shadow: 0 0 10px var(--neon-pink), 0 0 40px rgba(255,45,149,0.3); }
+  .glow-gold { text-shadow: 0 0 10px var(--neon-gold), 0 0 40px rgba(255,215,0,0.3); }
+
+  /* ===== BUTTONS ===== */
+  .btn-neon {
+    position:relative; overflow:hidden;
+    background: linear-gradient(135deg, rgba(0,240,255,0.15), rgba(176,38,255,0.15));
+    border: 1px solid rgba(0,240,255,0.4);
+    border-radius:12px; padding:10px 24px;
+    color:#fff; font-family:'Space Grotesk',sans-serif; font-weight:600;
+    cursor:pointer; transition:all 0.3s;
+  }
+  .btn-neon:hover {
+    background: linear-gradient(135deg, rgba(0,240,255,0.3), rgba(176,38,255,0.3));
+    box-shadow: 0 0 25px rgba(0,240,255,0.3), 0 0 50px rgba(176,38,255,0.15);
+    transform: translateY(-2px);
+  }
+  .btn-neon::after {
+    content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%;
+    background: linear-gradient(transparent, rgba(255,255,255,0.05), transparent);
+    transform: rotate(45deg); transition: 0.5s;
+  }
+  .btn-neon:hover::after { left:100%; }
+
+  .btn-bid {
+    background: linear-gradient(135deg, #ff2d95, #b026ff);
+    border:none; border-radius:14px; padding:14px 32px;
+    color:#fff; font-family:'Orbitron',monospace; font-weight:700; font-size:16px;
+    cursor:pointer; transition:all 0.3s;
+    box-shadow: 0 4px 25px rgba(255,45,149,0.3);
+  }
+  .btn-bid:hover {
+    transform:scale(1.05);
+    box-shadow: 0 4px 40px rgba(255,45,149,0.5), 0 0 80px rgba(176,38,255,0.3);
+  }
+  .btn-bid:active { transform:scale(0.97); }
+
+  .shortcut-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius:10px; padding:8px 16px;
+    color:#ccc; font-family:'Space Grotesk',sans-serif; font-weight:600;
+    cursor:pointer; transition:all 0.2s; font-size:14px;
+  }
+  .shortcut-btn:hover {
+    background: rgba(0,240,255,0.15);
+    border-color: var(--neon-cyan);
+    color:#fff;
+    box-shadow: 0 0 15px rgba(0,240,255,0.2);
+  }
+
+  /* ===== TIMER ===== */
+  .timer-ring {
+    width:100px; height:100px; position:relative;
+  }
+  .timer-ring svg { transform:rotate(-90deg); }
+  .timer-ring circle {
+    fill:none; stroke-width:4;
+  }
+  .timer-ring .bg-ring { stroke: rgba(255,255,255,0.08); }
+  .timer-ring .fg-ring {
+    stroke: url(#timerGradient);
+    stroke-linecap:round;
+    transition: stroke-dashoffset 1s linear;
+  }
+  .timer-text {
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-family:'Orbitron',monospace; font-weight:700; font-size:18px;
+  }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    position:fixed; inset:0; z-index:1000;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition:all 0.4s;
+  }
+  .modal-overlay.active { opacity:1; pointer-events:all; }
+  .modal-content {
+    background: linear-gradient(135deg, rgba(15,15,40,0.97), rgba(25,10,50,0.97));
+    border: 1px solid rgba(0,240,255,0.2);
+    border-radius:24px; padding:40px; max-width:500px; width:90%;
+    transform:scale(0.8) translateY(30px); transition:all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+    box-shadow: 0 0 60px rgba(0,240,255,0.1), 0 0 120px rgba(176,38,255,0.05);
+  }
+  .modal-overlay.active .modal-content { transform:scale(1) translateY(0); }
+
+  /* ===== PRODUCT DETAIL MODAL ===== */
+  .product-modal {
+    position:fixed; inset:0; z-index:900;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(15px);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition:all 0.4s;
+    padding:20px;
+  }
+  .product-modal.active { opacity:1; pointer-events:all; }
+  .product-detail {
+    background: linear-gradient(160deg, rgba(12,12,35,0.98), rgba(20,8,45,0.98));
+    border:1px solid rgba(0,240,255,0.15);
+    border-radius:28px; max-width:900px; width:100%; max-height:90vh; overflow-y:auto;
+    transform:scale(0.85); transition:all 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+    box-shadow: 0 0 80px rgba(0,240,255,0.08), 0 0 160px rgba(176,38,255,0.04);
+  }
+  .product-modal.active .product-detail { transform:scale(1); }
+
+  /* ===== BID HISTORY ===== */
+  .bid-entry {
+    animation: slideInBid 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+  }
+  @keyframes slideInBid {
+    from { transform:translateX(-30px); opacity:0; }
+    to { transform:translateX(0); opacity:1; }
+  }
+
+  /* ===== NAVBAR ===== */
+  .navbar {
+    background: rgba(5,5,16,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    position:sticky; top:0; z-index:100;
+  }
+
+  /* ===== CATEGORY PILLS ===== */
+  .cat-pill {
+    padding:8px 20px; border-radius:50px;
+    background: rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.08);
+    color:#aaa; font-size:14px; cursor:pointer;
+    transition:all 0.3s; font-weight:500; white-space:nowrap;
+  }
+  .cat-pill:hover, .cat-pill.active {
+    background: linear-gradient(135deg, rgba(0,240,255,0.15), rgba(176,38,255,0.15));
+    border-color: var(--neon-cyan);
+    color:#fff;
+    box-shadow: 0 0 20px rgba(0,240,255,0.15);
+  }
+
+  /* ===== BADGE ===== */
+  .badge-hot {
+    background: linear-gradient(135deg, #ff2d95, #ff6600);
+    padding:3px 10px; border-radius:20px; font-size:11px;
+    font-weight:700; text-transform:uppercase; letter-spacing:1px;
+  }
+  .badge-live {
+    background: linear-gradient(135deg, #39ff14, #00cc88);
+    color:#000; padding:3px 10px; border-radius:20px; font-size:11px;
+    font-weight:700; text-transform:uppercase; letter-spacing:1px;
+    animation: pulseLive 1.5s infinite;
+  }
+  @keyframes pulseLive {
+    0%,100% { box-shadow: 0 0 5px rgba(57,255,20,0.5); }
+    50% { box-shadow: 0 0 20px rgba(57,255,20,0.8); }
+  }
+
+  /* ===== IMAGE HOVER ===== */
+  .product-img-wrap {
+    overflow:hidden; border-radius:16px 16px 0 0; position:relative;
+  }
+  .product-img-wrap img {
+    width:100%; height:260px; object-fit:cover;
+    transition: transform 0.6s cubic-bezier(0.175,0.885,0.32,1.275);
+  }
+  .glass-card:hover .product-img-wrap img {
+    transform:scale(1.08);
+  }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width:6px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius:3px; }
+
+  /* ===== NOTIFICATION TOAST ===== */
+  .toast {
+    position:fixed; top:20px; right:20px; z-index:2000;
+    background: linear-gradient(135deg, rgba(15,15,40,0.95), rgba(25,10,50,0.95));
+    border:1px solid rgba(57,255,20,0.4);
+    border-radius:16px; padding:16px 24px;
+    transform:translateX(120%); transition:all 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+    box-shadow: 0 0 30px rgba(57,255,20,0.15);
+    max-width:350px;
+  }
+  .toast.show { transform:translateX(0); }
+
+  /* ===== HERO SECTION ===== */
+  .hero-glow {
+    position:absolute; width:500px; height:500px; border-radius:50%;
+    filter:blur(120px); opacity:0.15; pointer-events:none;
+  }
+
+  /* ===== STATS COUNTER ===== */
+  .stat-box {
+    text-align:center; padding:20px;
+    border-right:1px solid rgba(255,255,255,0.06);
+  }
+  .stat-box:last-child { border-right:none; }
+
+  /* ===== INPUT ===== */
+  .input-cyber {
+    background: rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:12px; padding:12px 18px;
+    color:#fff; font-size:16px; width:100%;
+    font-family:'Space Grotesk',sans-serif;
+    transition:all 0.3s;
+  }
+  .input-cyber:focus {
+    outline:none;
+    border-color:var(--neon-cyan);
+    box-shadow: 0 0 20px rgba(0,240,255,0.15);
+  }
+
+  /* ===== CONFETTI ===== */
+  .confetti-piece {
+    position:fixed; z-index:3000; pointer-events:none;
+    animation:confettiFall linear forwards;
+  }
+  @keyframes confettiFall {
+    0% { transform:translateY(-10vh) rotate(0deg); opacity:1; }
+    100% { transform:translateY(110vh) rotate(720deg); opacity:0; }
+  }
+
+  /* ===== MARQUEE ===== */
+  .marquee-track {
+    display:flex; gap:40px; animation: marqueeScroll 30s linear infinite;
+    white-space:nowrap;
+  }
+  @keyframes marqueeScroll {
+    0% { transform:translateX(0); }
+    100% { transform:translateX(-50%); }
+  }
+
+  /* ===== PULSE RING ===== */
+  .pulse-ring {
+    position:absolute; inset:-4px; border-radius:50%;
+    border:2px solid var(--neon-cyan);
+    animation: pulseRing 2s infinite;
+  }
+  @keyframes pulseRing {
+    0% { transform:scale(1); opacity:0.6; }
+    100% { transform:scale(1.5); opacity:0; }
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width:768px) {
+    .product-detail { border-radius:16px; }
+    .hero-title { font-size:28px !important; }
+    .stat-box { border-right:none; border-bottom:1px solid rgba(255,255,255,0.06); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== ANIMATED BACKGROUND ===== -->
+<div class="bg-universe"></div>
+<div class="grid-overlay"></div>
+<div id="particles"></div>
+
+<!-- ===== WELCOME MODAL ===== -->
+<div class="modal-overlay active" id="welcomeModal">
+  <div class="modal-content text-center">
+    <div class="mb-6">
+      <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-cyan-400 via-purple-500 to-pink-500 flex items-center justify-center mb-4 relative">
+        <i class="fas fa-gavel text-3xl text-white"></i>
+        <div class="pulse-ring"></div>
+      </div>
+      <h2 class="text-3xl font-bold neon-text mb-2" style="font-family:'Orbitron',monospace;">BidVerse</h2>
+      <p class="text-gray-400 text-sm">Premium Auction Platform</p>
+    </div>
+    <div class="bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-5 mb-6 border border-cyan-500/20">
+      <p class="text-lg font-semibold text-white mb-1">Crafted by</p>
+      <p class="text-2xl font-bold neon-text" style="font-family:'Orbitron',monospace;">MDHojayfa</p>
+    </div>
+    <div class="flex items-center justify-center gap-3 mb-6 bg-white/5 rounded-xl p-4 border border-white/10">
+      <i class="fab fa-telegram text-2xl text-cyan-400"></i>
+      <div class="text-left">
+        <p class="text-xs text-gray-400">Contact & More Info</p>
+        <a href="https://t.me/MDHojayfa_bot" target="_blank" class="text-cyan-400 font-bold hover:text-cyan-300 transition">@MDHojayfa_bot</a>
+      </div>
+    </div>
+    <button onclick="closeWelcome()" class="btn-bid w-full text-lg">
+      <i class="fas fa-rocket mr-2"></i> Enter BidVerse
+    </button>
+  </div>
+</div>
+
+<!-- ===== NOTIFICATION TOAST ===== -->
+<div class="toast" id="toast">
+  <div class="flex items-center gap-3">
+    <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
+      <i class="fas fa-check text-green-400"></i>
+    </div>
+    <div>
+      <p class="font-semibold text-white text-sm" id="toastTitle">Bid Placed!</p>
+      <p class="text-gray-400 text-xs" id="toastMsg">Your bid has been recorded</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar px-6 py-4">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center">
+        <i class="fas fa-gavel text-white text-lg"></i>
+      </div>
+      <h1 class="text-xl font-bold neon-text" style="font-family:'Orbitron',monospace;">BidVerse</h1>
+    </div>
+    <div class="hidden md:flex items-center gap-6">
+      <a href="#" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">Home</a>
+      <a href="#auctions" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">Auctions</a>
+      <a href="#" class="text-gray-300 hover:text-cyan-400 transition text-sm font-medium">How it Works</a>
+      <a href="https://t.me/MDHojayfa_bot" target="_blank" class="btn-neon text-sm">
+        <i class="fab fa-telegram mr-2"></i> Contact
+      </a>
+    </div>
+    <button class="md:hidden text-white text-xl" onclick="document.getElementById('mobileMenu').classList.toggle('hidden')">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+  <div id="mobileMenu" class="hidden md:hidden mt-4 flex flex-col gap-3 pb-4 max-w-7xl mx-auto">
+    <a href="#" class="text-gray-300 hover:text-cyan-400 transition text-sm py-2">Home</a>
+    <a href="#auctions" class="text-gray-300 hover:text-cyan-400 transition text-sm py-2">Auctions</a>
+    <a href="https://t.me/MDHojayfa_bot" target="_blank" class="text-cyan-400 text-sm py-2"><i class="fab fa-telegram mr-1"></i> @MDHojayfa_bot</a>
+  </div>
+</nav>
+
+<!-- ===== HERO SECTION ===== -->
+<section class="relative py-20 px-6 overflow-hidden">
+  <div class="hero-glow bg-cyan-500" style="top:-100px; left:-100px;"></div>
+  <div class="hero-glow bg-purple-600" style="bottom:-100px; right:-100px;"></div>
+  <div class="max-w-7xl mx-auto text-center relative z-10">
+    <div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-6">
+      <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+      <span class="text-xs text-gray-300 font-medium">Live Auctions Running Now</span>
+    </div>
+    <h1 class="hero-title text-5xl md:text-7xl font-black mb-6 leading-tight" style="font-family:'Orbitron',monospace;">
+      <span class="neon-text">Bid. Win.</span><br>
+      <span class="text-white">Own the Future.</span>
+    </h1>
+    <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed" style="font-family:'Space Grotesk',sans-serif;">
+      The most electrifying auction platform. Compete in real-time, place strategic bids, and claim exclusive items before the timer runs out.
+    </p>
+    <div class="flex flex-wrap justify-center gap-4 mb-12">
+      <a href="#auctions" class="btn-bid text-lg px-10">
+        <i class="fas fa-fire mr-2"></i> Explore Auctions
+      </a>
+      <button onclick="showWelcomeInfo()" class="btn-neon text-lg px-10">
+        <i class="fas fa-info-circle mr-2"></i> About Us
+      </button>
+    </div>
+
+    <!-- ===== STATS ===== -->
+    <div class="glass-card max-w-3xl mx-auto grid grid-cols-2 md:grid-cols-4" style="transform:none;">
+      <div class="stat-box">
+        <p class="text-2xl md:text-3xl font-bold neon-text" style="font-family:'Orbitron',monospace;" id="statBids">0</p>
+        <p class="text-gray-400 text-xs mt-1">Total Bids</p>
+      </div>
+      <div class="stat-box">
+        <p class="text-2xl md:text-3xl font-bold text-pink-400 glow-pink" style="font-family:'Orbitron',monospace;" id="statUsers">0</p>
+        <p class="text-gray-400 text-xs mt-1">Active Users</p>
+      </div>
+      <div class="stat-box">
+        <p class="text-2xl md:text-3xl font-bold text-yellow-400 glow-gold" style="font-family:'Orbitron',monospace;" id="statItems">0</p>
+        <p class="text-gray-400 text-xs mt-1">Items Listed</p>
+      </div>
+      <div class="stat-box" style="border:none;">
+        <p class="text-2xl md:text-3xl font-bold text-green-400" style="font-family:'Orbitron',monospace;">$<span id="statValue">0</span></p>
+        <p class="text-gray-400 text-xs mt-1">Value Traded</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LIVE TICKER MARQUEE ===== -->
+<div class="overflow-hidden py-4 border-y border-white/5 mb-8">
+  <div class="marquee-track">
+    <span class="text-gray-500 text-sm"><i class="fas fa-bolt text-yellow-400"></i> User_xK92 bid <span class="text-cyan-400">$4,200</span> on Rolex Submariner</span>
+    <span class="text-gray-500 text-sm"><i class="fas fa-bolt text-yellow-400"></i> CryptoKing placed <span class="text-pink-400">$12,500</span> on Lamborghini</span>
+    <span class="text-gray-500 text-sm"><i class="fas fa-bolt text-yellow-400"></i> ArtCollector99 bid <span class="text-green-400">$8,300</span> on Starry Night Print</span>
+    <span class="text-gray-500 text-sm"><i class="fas fa-bolt text-yellow-400"></i> TechNinja bid <span class="text-purple-400">$3,100</span> on MacBook Pro</span>
+    <span class="text-gray-500 text-sm"><i class="fas fa-bolt text-yellow-400"></i> DiamondHands bid <span class="text-orange-400">$22,000</span> on Diamond Necklace</span>
+    <span class="text-gray-500 text-sm"><i class="fas fa-bolt text-yellow-400"></i> GamerPro420 bid <span class="text-cyan-400">$2,800</span> on RTX 4090 GPU</span>
+    <!-- duplicated for seamless scroll -->
+    <span class="text-gray-500 text-sm"><i class="fas fa-bolt text-yellow-400"></i> User_xK92 bid <span class="text-cyan-400">$4,200</span> on Rolex Submariner</span>
+    <span class="text-gray-500 text-sm"><i class="fas fa-bolt text-yellow-400"></i> CryptoKing placed <span class="text-pink-400">$12,500</span> on Lamborghini</span>
+    <span class="text-gray-500 text-sm"><i class="fas fa-bolt text-yellow-400"></i> ArtCollector99 bid <span class="text-green-400">$8,300</span> on Starry Night Print</span>
+    <span class="text-gray-500 text-sm"><i class="fas fa-bolt text-yellow-400"></i> TechNinja bid <span class="text-purple-400">$3,100</span> on MacBook Pro</span>
+    <span class="text-gray-500 text-sm"><i class="fas fa-bolt text-yellow-400"></i> DiamondHands bid <span class="text-orange-400">$22,000</span> on Diamond Necklace</span>
+    <span class="text-gray-500 text-sm"><i class="fas fa-bolt text-yellow-400"></i> GamerPro420 bid <span class="text-cyan-400">$2,800</span> on RTX 4090 GPU</span>
+  </div>
+</div>
+
+<!-- ===== CATEGORIES ===== -->
+<section class="px-6 mb-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex gap-3 overflow-x-auto pb-2" id="categoryBar">
+      <button class="cat-pill active" onclick="filterCategory('all', this)">🔥 All</button>
+      <button class="cat-pill" onclick="filterCategory('luxury', this)">💎 Luxury</button>
+      <button class="cat-pill" onclick="filterCategory('tech', this)">💻 Tech</button>
+      <button class="cat-pill" onclick="filterCategory('auto', this)">🏎️ Auto</button>
+      <button class="cat-pill" onclick="filterCategory('art', this)">🎨 Art</button>
+      <button class="cat-pill" onclick="filterCategory('fashion', this)">👗 Fashion</button>
+      <button class="cat-pill" onclick="filterCategory('collectibles', this)">🏆 Collectibles</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRODUCTS GRID ===== -->
+<section class="px-6 pb-20" id="auctions">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-2xl md:text-3xl font-bold" style="font-family:'Orbitron',monospace;">
+        <span class="neon-text">Live</span> <span class="text-white">Auctions</span>
+      </h2>
+      <div class="flex items-center gap-2 text-sm text-gray-400">
+        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+        <span id="liveCount">8</span> active
+      </div>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="productsGrid">
+      <!-- Products injected by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRODUCT DETAIL / BIDDING MODAL ===== -->
+<div class="product-modal" id="productModal">
+  <div class="product-detail" id="productDetail">
+    <!-- Filled by JS -->
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="border-t border-white/5 py-12 px-6">
+  <div class="max-w-7xl mx-auto text-center">
+    <div class="flex items-center justify-center gap-3 mb-4">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-purple-500 flex items-center justify-center">
+        <i class="fas fa-gavel text-white text-sm"></i>
+      </div>
+      <span class="text-lg font-bold neon-text" style="font-family:'Orbitron',monospace;">BidVerse</span>
+    </div>
+    <p class="text-gray-500 text-sm mb-4">Made with 💜 by <span class="text-cyan-400 font-semibold">MDHojayfa</span></p>
+    <div class="flex items-center justify-center gap-4 mb-4">
+      <a href="https://t.me/MDHojayfa_bot" target="_blank" class="text-gray-400 hover:text-cyan-400 transition">
+        <i class="fab fa-telegram text-xl"></i>
+      </a>
+    </div>
+    <p class="text-gray-600 text-xs">© 2025 BidVerse. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ===== SVG DEFS ===== -->
+<svg width="0" height="0" style="position:absolute;">
+  <defs>
+    <linearGradient id="timerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff"/>
+      <stop offset="50%" stop-color="#b026ff"/>
+      <stop offset="100%" stop-color="#ff2d95"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<script>
+// ===== PRODUCT DATA =====
+const products = [
+  {
+    id:1, name:"Rolex Submariner", category:"luxury",
+    image:"https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600&h=400&fit=crop",
+    description:"Iconic luxury dive watch. Oyster case, 41mm, Oystersteel. Cerachrom bezel insert in black ceramic. Water-resistant to 300m. A timeless masterpiece of horology.",
+    startPrice:3500, currentBid:4200, bids:23, timer:120, badge:"hot",
+    bidHistory:[{user:"WatchFan88",amount:4200,time:"2m ago"},{user:"LuxCollector",amount:4100,time:"5m ago"},{user:"TimePiece_Pro",amount:3900,time:"8m ago"}]
+  },
+  {
+    id:2, name:"Lamborghini Huracán EVO", category:"auto",
+    image:"https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&h=400&fit=crop",
+    description:"5.2L V10 naturally aspirated engine, 640hp. 0-60 in 2.9 seconds. Rear-wheel drive with cutting-edge aerodynamics. The ultimate supercar experience.",
+    startPrice:95000, currentBid:125000, bids:67, timer:180, badge:"live",
+    bidHistory:[{user:"CryptoKing",amount:125000,time:"1m ago"},{user:"SpeedDemon",amount:122000,time:"3m ago"},{user:"CarGuru",amount:118000,time:"7m ago"}]
+  },
+  {
+    id:3, name:'MacBook Pro 16" M4 Max', category:"tech",
+    image:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&h=400&fit=crop",
+    description:"Apple M4 Max chip, 48GB unified memory, 1TB SSD. 16-inch Liquid Retina XDR display. The most powerful MacBook ever created for pro workflows.",
+    startPrice:2500, currentBid:3100, bids:41, timer:90, badge:"hot",
+    bidHistory:[{user:"TechNinja",amount:3100,time:"30s ago"},{user:"DevMaster",amount:3000,time:"2m ago"},{user:"DesignPro",amount:2900,time:"4m ago"}]
+  },
+  {
+    id:4, name:"Diamond Eternity Necklace", category:"luxury",
+    image:"https://images.unsplash.com/photo-1515562141589-67f0d569b6c2?w=600&h=400&fit=crop",
+    description:"18K white gold necklace featuring 12.5 carats of VS1 clarity diamonds. Hand-set brilliant round stones. Certificate of authenticity included.",
+    startPrice:15000, currentBid:22000, bids:34, timer:150, badge:"live",
+    bidHistory:[{user:"DiamondHands",amount:22000,time:"1m ago"},{user:"JewelQueen",amount:21000,time:"4m ago"},{user:"Sparkle99",amount:19500,time:"6m ago"}]
+  },
+  {
+    id:5, name:"Starry Night — Limited Print", category:"art",
+    image:"https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=600&h=400&fit=crop",
+    description:"Museum-quality giclée print of Van Gogh's masterpiece. Edition 12 of 50. Printed on archival cotton rag paper. Comes with certificate of authenticity.",
+    startPrice:5000, currentBid:8300, bids:29, timer:200, badge:"hot",
+    bidHistory:[{user:"ArtCollector99",amount:8300,time:"3m ago"},{user:"GalleryOwner",amount:7800,time:"6m ago"},{user:"PaintLover",amount:7200,time:"10m ago"}]
+  },
+  {
+    id:6, name:"NVIDIA RTX 5090 GPU", category:"tech",
+    image:"https://images.unsplash.com/photo-1591488320449-011701bb6704?w=600&h=400&fit=crop",
+    description:"32GB GDDR7 memory, 21,760 CUDA cores. Built on Blackwell architecture. DLSS 4 with Frame Generation. The pinnacle of gaming performance.",
+    startPrice:1800, currentBid:2800, bids:55, timer:75, badge:"live",
+    bidHistory:[{user:"GamerPro420",amount:2800,time:"20s ago"},{user:"PCMaster",amount:2700,time:"1m ago"},{user:"BuilderX",amount:2500,time:"3m ago"}]
+  },
+  {
+    id:7, name:"Hermès Birkin 25", category:"fashion",
+    image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&h=400&fit=crop",
+    description:"Togo calfskin leather in Noir. Gold hardware. Hand-stitched by artisan craftsmen. One of the most sought-after luxury handbags in the world.",
+    startPrice:18000, currentBid:28500, bids:38, timer:160, badge:"hot",
+    bidHistory:[{user:"FashionIcon",amount:28500,time:"2m ago"},{user:"LuxuryBuyer",amount:27000,time:"5m ago"},{user:"StyleQueen",amount:25000,time:"8m ago"}]
+  },
+  {
+    id:8, name:"1st Edition Charizard PSA 10", category:"collectibles",
+    image:"https://images.unsplash.com/photo-1613771404784-3a5686aa2be3?w=600&h=400&fit=crop",
+    description:"1999 Pokémon Base Set 1st Edition Charizard Holo #4. PSA Gem Mint 10 grade. One of the rarest and most valuable trading cards in existence.",
+    startPrice:50000, currentBid:78000, bids:82, timer:240, badge:"live",
+    bidHistory:[{user:"CardKing",amount:78000,time:"45s ago"},{user:"PokéMaster",amount:75000,time:"2m ago"},{user:"Collector_X",amount:72000,time:"5m ago"}]
+  }
+];
+
+// ===== TIMER STATE =====
+const timerStates = {};
+products.forEach(p => {
+  timerStates[p.id] = { remaining: p.timer, total: p.timer, interval: null };
+});
+
+// ===== PARTICLES =====
+function createParticles() {
+  const container = document.getElementById('particles');
+  const colors = ['#00f0ff','#b026ff','#ff2d95','#39ff14','#ffd700'];
+  for(let i=0; i<30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random()*4 + 2;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${Math.random()*15+10}s;
+      animation-delay:${Math.random()*10}s;
+    `;
+    container.appendChild(p);
+  }
+}
+createParticles();
+
+// ===== STATS ANIMATION =====
+function animateStats() {
+  animateValue('statBids',0,12847,2000);
+  animateValue('statUsers',0,3429,2000);
+  animateValue('statItems',0,856,2000);
+  animateValue('statValue',0,2400000,2000);
+}
+function animateValue(id,start,end,duration) {
+  const el = document.getElementById(id);
+  let startTime = null;
+  function step(timestamp) {
+    if(!startTime) startTime=timestamp;
+    const progress = Math.min((timestamp-startTime)/duration,1);
+    const eased = 1 - Math.pow(1-progress, 3);
+    const val = Math.floor(eased*(end-start)+start);
+    el.textContent = val.toLocaleString();
+    if(progress<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ===== RENDER PRODUCTS =====
+function renderProducts(filter='all') {
+  const grid = document.getElementById('productsGrid');
+  const filtered = filter==='all' ? products : products.filter(p=>p.category===filter);
+  grid.innerHTML = filtered.map((p, idx) => `
+    <div class="glass-card cursor-pointer product-card" data-category="${p.category}" onclick="openProduct(${p.id})" style="animation: fadeInUp 0.5s ${idx*0.08}s both;">
+      <div class="product-img-wrap">
+        <img src="${p.image}" alt="${p.name}" loading="lazy">
+        <div class="absolute top-3 left-3 flex gap-2">
+          ${p.badge==='hot' ? '<span class="badge-hot">🔥 Hot</span>' : '<span class="badge-live">● Live</span>'}
+        </div>
+        <div class="absolute top-3 right-3 bg-black/60 backdrop-blur-sm rounded-lg px-3 py-1.5 flex items-center gap-1.5">
+          <i class="fas fa-clock text-cyan-400 text-xs"></i>
+          <span class="text-white text-xs font-mono font-bold" id="cardTimer-${p.id}">${formatTime(timerStates[p.id].remaining)}</span>
+        </div>
+      </div>
+      <div class="p-5">
+        <div class="flex items-start justify-between mb-3">
+          <h3 class="font-bold text-white text-lg leading-snug" style="font-family:'Space Grotesk',sans-serif;">${p.name}</h3>
+        </div>
+        <div class="flex items-center gap-2 mb-4">
+          <span class="text-xs text-gray-500 uppercase tracking-wider">${p.category}</span>
+          <span class="text-gray-600">·</span>
+          <span class="text-xs text-gray-400">${p.bids + (products.find(x=>x.id===p.id)._extraBids||0)} bids</span>
+        </div>
+        <div class="flex items-end justify-between">
+          <div>
+            <p class="text-xs text-gray-500 mb-1">Current Bid</p>
+            <p class="text-xl font-bold text-cyan-400 glow-cyan" style="font-family:'Orbitron',monospace;">$${p.currentBid.toLocaleString()}</p>
+          </div>
+          <button class="btn-neon text-xs py-2 px-4" onclick="event.stopPropagation(); openProduct(${p.id})">
+            Place Bid <i class="fas fa-arrow-right ml-1"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // Add fadeInUp keyframe if not exists
+  if(!document.getElementById('fadeInStyle')) {
+    const s = document.createElement('style');
+    s.id = 'fadeInStyle';
+    s.textContent = `@keyframes fadeInUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }`;
+    document.head.appendChild(s);
+  }
+}
+
+// Init extra bids tracker
+products.forEach(p => p._extraBids = 0);
+
+// ===== FORMAT TIME =====
+function formatTime(seconds) {
+  const m = Math.floor(seconds/60);
+  const s = seconds%60;
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+// ===== TIMERS =====
+function startAllTimers() {
+  products.forEach(p => {
+    if(timerStates[p.id].interval) return;
+    timerStates[p.id].interval = setInterval(() => {
+      if(timerStates[p.id].remaining > 0) {
+        timerStates[p.id].remaining--;
+        // Update card timer
+        const cardEl = document.getElementById(`cardTimer-${p.id}`);
+        if(cardEl) cardEl.textContent = formatTime(timerStates[p.id].remaining);
+        // Update detail timer if open
+        const detailEl = document.getElementById(`detailTimer-${p.id}`);
+        if(detailEl) detailEl.textContent = formatTime(timerStates[p.id].remaining);
+        // Update ring
+        updateTimerRing(p.id);
+      }
+    }, 1000);
+  });
+}
+
+function updateTimerRing(id) {
+  const ring = document.getElementById(`ring-${id}`);
+  if(!ring) return;
+  const circumference = 2 * Math.PI * 45;
+  const progress = timerStates[id].remaining / timerStates[id].total;
+  ring.style.strokeDashoffset = circumference * (1 - progress);
+}
+
+function resetTimer(id) {
+  timerStates[id].remaining = timerStates[id].total;
+}
+
+// ===== OPEN PRODUCT DETAIL =====
+function openProduct(id) {
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  const circumference = 2 * Math.PI * 45;
+  const progress = timerStates[id].remaining / timerStates[id].total;
+
+  const modal = document.getElementById('productModal');
+  const detail = document.getElementById('productDetail');
+
+  detail.innerHTML = `
+    <div class="relative">
+      <!-- Close button -->
+      <button onclick="closeProduct()" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition cursor-pointer">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <!-- Product Image -->
+      <div class="relative">
+        <img src="${p.image}" alt="${p.name}" class="w-full h-64 md:h-80 object-cover rounded-t-[28px]">
+        <div class="absolute inset-0 bg-gradient-to-t from-[rgba(12,12,35,1)] via-transparent to-transparent rounded-t-[28px]"></div>
+        <div class="absolute bottom-4 left-6 flex gap-2">
+          ${p.badge==='hot' ? '<span class="badge-hot text-sm">🔥 Hot</span>' : '<span class="badge-live text-sm">● Live</span>'}
+          <span class="bg-black/50 backdrop-blur-sm rounded-full px-3 py-1 text-xs text-gray-300">${p.category.toUpperCase()}</span>
+        </div>
+      </div>
+
+      <div class="p-6 md:p-8">
+        <!-- Title & Description -->
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-3" style="font-family:'Orbitron',monospace;">${p.name}</h2>
+        <p class="text-gray-400 mb-6 leading-relaxed" style="font-family:'Space Grotesk',sans-serif;">${p.description}</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <!-- Left: Bid Info -->
+          <div>
+            <div class="bg-white/5 rounded-2xl p-5 border border-white/5 mb-4">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <p class="text-xs text-gray-500 uppercase tracking-wider mb-1">Current Bid</p>
+                  <p class="text-3xl font-bold text-cyan-400 glow-cyan" style="font-family:'Orbitron',monospace;" id="currentBidDisplay-${id}">$${p.currentBid.toLocaleString()}</p>
+                </div>
+                <div class="timer-ring">
+                  <svg width="100" height="100" viewBox="0 0 100 100">
+                    <circle class="bg-ring" cx="50" cy="50" r="45"/>
+                    <circle class="fg-ring" id="ring-${id}" cx="50" cy="50" r="45"
+                      stroke-dasharray="${circumference}"
+                      stroke-dashoffset="${circumference * (1-progress)}"/>
+                  </svg>
+                  <div class="timer-text text-cyan-400" id="detailTimer-${id}">${formatTime(timerStates[id].remaining)}</div>
+                </div>
+              </div>
+              <div class="grid grid-cols-3 gap-3 text-center">
+                <div class="bg-white/5 rounded-xl p-3">
+                  <p class="text-lg font-bold text-white" style="font-family:'Orbitron',monospace;">${p.bids + (p._extraBids||0)}</p>
+                  <p class="text-xs text-gray-500">Bids</p>
+                </div>
+                <div class="bg-white/5 rounded-xl p-3">
+                  <p class="text-lg font-bold text-white" style="font-family:'Orbitron',monospace;">$${p.startPrice.toLocaleString()}</p>
+                  <p class="text-xs text-gray-500">Start</p>
+                </div>
+                <div class="bg-white/5 rounded-xl p-3">
+                  <p class="text-lg font-bold text-green-400" style="font-family:'Orbitron',monospace;">+${Math.round(((p.currentBid-p.startPrice)/p.startPrice)*100)}%</p>
+                  <p class="text-xs text-gray-500">Increase</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bid Input -->
+            <div class="bg-white/5 rounded-2xl p-5 border border-white/5">
+              <label class="text-sm text-gray-400 mb-2 block font-medium">Your Bid Amount ($)</label>
+              <div class="flex gap-3 mb-4">
+                <div class="relative flex-1">
+                  <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">$</span>
+                  <input type="number" id="bidInput-${id}" class="input-cyber pl-8" placeholder="${p.currentBid + 50}" min="${p.currentBid+1}">
+                </div>
+                <button onclick="placeBid(${id})" class="btn-bid whitespace-nowrap">
+                  <i class="fas fa-gavel mr-2"></i> BID
+                </button>
+              </div>
+
+              <!-- Shortcut buttons -->
+              <p class="text-xs text-gray-500 mb-2">Quick Add:</p>
+              <div class="flex flex-wrap gap-2">
+                <button class="shortcut-btn" onclick="addToBid(${id},10)">+$10</button>
+                <button class="shortcut-btn" onclick="addToBid(${id},20)">+$20</button>
+                <button class="shortcut-btn" onclick="addToBid(${id},50)">+$50</button>
+                <button class="shortcut-btn" onclick="addToBid(${id},100)">+$100</button>
+                <button class="shortcut-btn" onclick="addToBid(${id},250)">+$250</button>
+                <button class="shortcut-btn" onclick="addToBid(${id},500)">+$500</button>
+                <button class="shortcut-btn" onclick="addToBid(${id},1000)">+$1K</button>
+                <button class="shortcut-btn" onclick="addToBid(${id},5000)">+$5K</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Bid History -->
+          <div>
+            <div class="bg-white/5 rounded-2xl p-5 border border-white/5 h-full">
+              <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                <i class="fas fa-history text-cyan-400"></i> Bid History
+              </h3>
+              <div class="space-y-3 max-h-72 overflow-y-auto pr-2" id="bidHistory-${id}">
+                ${p.bidHistory.map((b,i) => `
+                  <div class="bid-entry flex items-center justify-between bg-white/5 rounded-xl p-3 ${i===0?'border border-cyan-500/30':''}">
+                    <div class="flex items-center gap-3">
+                      <div class="w-8 h-8 rounded-full bg-gradient-to-br ${i===0?'from-cyan-400 to-purple-500':'from-gray-600 to-gray-700'} flex items-center justify-center text-xs font-bold text-white">
+                        ${b.user.charAt(0)}
+                      </div>
+                      <div>
+                        <p class="text-sm font-semibold text-white">${b.user}</p>
+                        <p class="text-xs text-gray-500">${b.time}</p>
+                      </div>
+                    </div>
+                    <p class="text-sm font-bold ${i===0?'text-cyan-400':'text-gray-400'}" style="font-family:'Orbitron',monospace;">$${b.amount.toLocaleString()}</p>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer info -->
+        <div class="flex items-center justify-between pt-4 border-t border-white/5">
+          <div class="flex items-center gap-2 text-xs text-gray-500">
+            <i class="fas fa-shield-alt text-green-400"></i>
+            <span>Secure & verified auction by <span class="text-cyan-400">MDHojayfa</span></span>
+          </div>
+          <a href="https://t.me/MDHojayfa_bot" target="_blank" class="text-xs text-cyan-400 hover:underline flex items-center gap-1">
+            <i class="fab fa-telegram"></i> Support
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // Focus input
+  setTimeout(() => {
+    const inp = document.getElementById(`bidInput-${id}`);
+    if(inp) inp.value = p.currentBid + 50;
+  }, 300);
+}
+
+function closeProduct() {
+  document.getElementById('productModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Close on backdrop click
+document.getElementById('productModal').addEventListener('click', function(e) {
+  if(e.target === this) closeProduct();
+});
+
+// ===== PLACE BID =====
+function placeBid(id) {
+  const p = products.find(x=>x.id===id);
+  const inp = document.getElementById(`bidInput-${id}`);
+  const amount = parseInt(inp.value);
+
+  if(!amount || amount <= p.currentBid) {
+    showToast('Invalid Bid', `Bid must be higher than $${p.currentBid.toLocaleString()}`, 'error');
+    inp.classList.add('border-red-500');
+    setTimeout(()=>inp.classList.remove('border-red-500'),1500);
+    return;
+  }
+
+  // Update product
+  const oldBid = p.currentBid;
+  p.currentBid = amount;
+  p._extraBids = (p._extraBids||0) + 1;
+
+  // Generate random username
+  const names = ['BidMaster','SilentSniper','AuctionAce','QuickDraw','ShadowBid','NightOwl','PhantomBid','EliteBuyer','ValueHunter','BidStorm'];
+  const username = names[Math.floor(Math.random()*names.length)] + Math.floor(Math.random()*99);
+
+  // Add to history
+  p.bidHistory.unshift({ user: username, amount: amount, time: 'Just now' });
+
+  // Reset timer
+  resetTimer(id);
+
+  // Update displays
+  const display = document.getElementById(`currentBidDisplay-${id}`);
+  if(display) display.textContent = `$${amount.toLocaleString()}`;
+
+  // Re-render bid history
+  const historyEl = document.getElementById(`bidHistory-${id}`);
+  if(historyEl) {
+    historyEl.innerHTML = p.bidHistory.slice(0,10).map((b,i) => `
+      <div class="bid-entry flex items-center justify-between bg-white/5 rounded-xl p-3 ${i===0?'border border-cyan-500/30':''}">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br ${i===0?'from-cyan-400 to-purple-500':'from-gray-600 to-gray-700'} flex items-center justify-center text-xs font-bold text-white">
+            ${b.user.charAt(0)}
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-white">${b.user}</p>
+            <p class="text-xs text-gray-500">${b.time}</p>
+          </div>
+        </div>
+        <p class="text-sm font-bold ${i===0?'text-cyan-400':'text-gray-400'}" style="font-family:'Orbitron',monospace;">$${b.amount.toLocaleString()}</p>
+      </div>
+    `).join('');
+  }
+
+  // Update input
+  inp.value = amount + 50;
+
+  // Re-render cards
+  renderProducts(currentFilter);
+
+  // Show toast
+  showToast('🎉 Bid Placed!', `$${amount.toLocaleString()} on ${p.name}`, 'success');
+
+  // Confetti!
+  spawnConfetti();
+}
+
+// ===== ADD TO BID (SHORTCUTS) =====
+function addToBid(id, amount) {
+  const inp = document.getElementById(`bidInput-${id}`);
+  const current = parseInt(inp.value) || products.find(x=>x.id===id).currentBid;
+  inp.value = current + amount;
+  // Flash effect
+  inp.style.borderColor = 'var(--neon-cyan)';
+  inp.style.boxShadow = '0 0 20px rgba(0,240,255,0.3)';
+  setTimeout(() => {
+    inp.style.borderColor = '';
+    inp.style.boxShadow = '';
+  }, 300);
+}
+
+// ===== TOAST =====
+function showToast(title, msg, type='success') {
+  const toast = document.getElementById('toast');
+  const titleEl = document.getElementById('toastTitle');
+  const msgEl = document.getElementById('toastMsg');
+  titleEl.textContent = title;
+  msgEl.textContent = msg;
+  toast.style.borderColor = type==='success' ? 'rgba(57,255,20,0.4)' : 'rgba(255,45,45,0.4)';
+  toast.classList.add('show');
+  setTimeout(()=> toast.classList.remove('show'), 3500);
+}
+
+// ===== CONFETTI =====
+function spawnConfetti() {
+  const colors = ['#00f0ff','#b026ff','#ff2d95','#39ff14','#ffd700','#ff6600'];
+  for(let i=0; i<40; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti-piece';
+    const size = Math.random()*8+4;
+    c.style.cssText = `
+      width:${size}px; height:${size*1.5}px;
+      left:${Math.random()*100}vw; top:-10px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      border-radius:${Math.random()>0.5?'50%':'2px'};
+      animation-duration:${Math.random()*2+2}s;
+      animation-delay:${Math.random()*0.5}s;
+    `;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(), 4000);
+  }
+}
+
+// ===== CATEGORY FILTER =====
+let currentFilter = 'all';
+function filterCategory(cat, btn) {
+  currentFilter = cat;
+  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts(cat);
+  const count = cat==='all' ? products.length : products.filter(p=>p.category===cat).length;
+  document.getElementById('liveCount').textContent = count;
+}
+
+// ===== WELCOME MODAL =====
+function closeWelcome() {
+  const modal = document.getElementById('welcomeModal');
+  modal.classList.remove('active');
+  animateStats();
+}
+function showWelcomeInfo() {
+  document.getElementById('welcomeModal').classList.add('active');
+}
+
+// ===== KEYBOARD SHORTCUTS =====
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') {
+    closeProduct();
+    const wm = document.getElementById('welcomeModal');
+    if(wm.classList.contains('active') && !document.querySelector('.product-modal.active')) {
+      closeWelcome();
+    }
+  }
+});
+
+// ===== AI BIDDING SIMULATION =====
+function simulateCompetitorBids() {
+  setInterval(() => {
+    const randomProduct = products[Math.floor(Math.random()*products.length)];
+    if(timerStates[randomProduct.id].remaining <= 0) return;
+
+    const increment = [10,20,25,50,75,100,150,200][Math.floor(Math.random()*8)];
+    randomProduct.currentBid += increment;
+    randomProduct._extraBids = (randomProduct._extraBids||0) + 1;
+
+    const names = ['AlphaWolf','SniperX','GhostBid','MegaBuyer','ProTrader','SwiftBid','EdgeRunner','NeonHawk','VoltBid','ZeroCool'];
+    const user = names[Math.floor(Math.random()*names.length)] + Math.floor(Math.random()*99);
+    randomProduct.bidHistory.unshift({ user, amount: randomProduct.currentBid, time: 'Just now' });
+
+    // Update card display
+    renderProducts(currentFilter);
+
+    // Update detail if open
+    const display = document.getElementById(`currentBidDisplay-${randomProduct.id}`);
+    if(display) {
+      display.textContent = `$${randomProduct.currentBid.toLocaleString()}`;
+      display.style.transform = 'scale(1.15)';
+      setTimeout(()=>display.style.transform='scale(1)', 300);
+    }
+    const historyEl = document.getElementById(`bidHistory-${randomProduct.id}`);
+    if(historyEl) {
+      openProduct(randomProduct.id); // Re-render detail
+    }
+  }, 8000 + Math.random()*7000);
+}
+
+// ===== INIT =====
+renderProducts();
+startAllTimers();
+simulateCompetitorBids();
+
+// Keyboard enter for bid
+document.addEventListener('keypress', e => {
+  if(e.key==='Enter' && e.target.id && e.target.id.startsWith('bidInput-')) {
+    const id = parseInt(e.target.id.replace('bidInput-',''));
+    placeBid(id);
+  }
+});
+</script>
+</body>
+</html>
